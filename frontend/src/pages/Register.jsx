@@ -23,7 +23,7 @@ export default function Register() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
-    <div className="flex h-screen w-full font-sans">
+    <div className="flex min-h-screen w-full font-sans">
 
       {/* Left — landscape photo */}
       <div
@@ -35,7 +35,7 @@ export default function Register() {
       />
 
       {/* Right — form panel */}
-      <div className="w-full md:w-2/5 flex flex-col justify-between bg-white px-10 py-8">
+      <div className="w-full md:w-2/5 flex flex-col justify-between bg-white px-6 sm:px-10 py-6 sm:py-8 overflow-y-auto">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-1.5 w-fit hover:opacity-80 transition-opacity">
@@ -45,7 +45,7 @@ export default function Register() {
         </Link>
 
         {/* Form content */}
-        <div className="flex flex-col gap-5 w-full max-w-xs mx-auto">
+        <div className="flex flex-col gap-4 sm:gap-5 w-full max-w-xs mx-auto">
           <h1 className="text-2xl font-normal text-gray-800 leading-snug">
             Welcome to <span className="font-bold text-green-700">our</span> Page
           </h1>
@@ -111,9 +111,9 @@ export default function Register() {
           {/* Sign in link */}
           <p className="text-center text-sm text-gray-400">
             have an account?{' '}
-            <a href="#" className="text-green-600 hover:underline font-medium">
+            <Link to="/login" className="text-green-600 hover:underline font-medium">
               Sign in now
-            </a>
+            </Link>
           </p>
         </div>
 
