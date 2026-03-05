@@ -18,115 +18,234 @@ const EyeOffIcon = () => (
   </svg>
 );
 
+const UserIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className="text-gray-400 flex-shrink-0">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className="text-gray-400 flex-shrink-0">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full font-sans">
+    <>
+      {/* ── MOBILE LAYOUT (hidden on md and above) ── */}
+      <div className="md:hidden min-h-screen bg-[#0d2535] flex flex-col font-sans">
 
-      {/* Left — landscape photo */}
-      <div
-        className="hidden md:block md:w-3/5 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('PaisajeGranCanaria.jpg')",
-        }}
-      />
+        {/* Mobile header */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <button className="flex items-center justify-center w-10 h-10 text-white" aria-label="Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <Link to="/" className="flex items-center gap-1.5">
+            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-base font-bold select-none">🌿</span>
+            <span className="font-bold text-white text-base tracking-wide">Raíces</span>
+            <span className="text-lg">🍃</span>
+          </Link>
+          <div className="w-10" />
+        </div>
 
-      {/* Right — form panel */}
-      <div className="w-full md:w-2/5 flex flex-col justify-between bg-white px-6 sm:px-10 py-6 sm:py-8 overflow-y-auto">
+        {/* Card */}
+        <div className="flex-1 flex flex-col justify-center px-5 py-6">
+          <div className="bg-[#122d47] rounded-2xl px-6 py-8 flex flex-col gap-5">
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-1.5 w-fit hover:opacity-80 transition-opacity">
-          <span className="text-xl">🌍</span>
-          <span className="font-semibold text-gray-800 text-base tracking-wide">Raíces</span>
-          <span className="text-lg">🌿</span>
-        </Link>
-
-        {/* Form content */}
-        <div className="flex flex-col gap-4 sm:gap-5 w-full max-w-xs mx-auto">
-          <h1 className="text-2xl font-normal text-gray-800 leading-snug">
-            Nice to see you <span className="font-bold">again</span>
-          </h1>
-
-          {/* Login */}
-          <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500">Login</label>
-            <input
-              type="text"
-              placeholder="Email or phone number"
-              className="border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Enter password"
-                className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(v => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                aria-label="Toggle password visibility"
-              >
-                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-              </button>
+            {/* Title */}
+            <div className="text-center">
+              <h1 className="text-xl font-bold text-white leading-snug">
+                Nice to see you <span className="text-green-400">again</span>
+              </h1>
+              <p className="text-gray-400 text-sm mt-1">Sign in to continue</p>
             </div>
-          </div>
 
-          {/* Remember me + Forgot password */}
-          <div className="flex items-center justify-between">
+            {/* Inputs white card */}
+            <div className="bg-white rounded-2xl px-5 py-4 flex flex-col gap-4">
+              {/* Login field */}
+              <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
+                <UserIcon />
+                <input
+                  type="text"
+                  placeholder="Email or phone number"
+                  className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
+                />
+              </div>
+
+              {/* Password field */}
+              <div className="flex items-center gap-3">
+                <LockIcon />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  className="text-gray-400 flex-shrink-0"
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
+            </div>
+
+            {/* Forgot password */}
+            <div className="flex justify-end -mt-2">
+              <Link to="/forgot-password" className="text-sm text-green-400 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Sign in button */}
+            <button
+              type="button"
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors"
+            >
+              Sign in
+            </button>
+
+            {/* Remember me */}
             <button
               type="button"
               onClick={() => setRemember(v => !v)}
-              className="flex items-center gap-2 group"
+              className="flex items-center justify-center gap-2"
               aria-label="Toggle remember me"
             >
-              {/* Toggle switch */}
-              <span
-                className={`relative inline-flex w-10 h-5 rounded-full transition-colors duration-200 ${
-                  remember ? 'bg-green-500' : 'bg-gray-300'
-                }`}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
-                    remember ? 'translate-x-5' : 'translate-x-0'
-                  }`}
-                />
+              <span className={`relative inline-flex w-10 h-5 rounded-full transition-colors duration-200 ${remember ? 'bg-green-500' : 'bg-gray-600'}`}>
+                <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${remember ? 'translate-x-5' : 'translate-x-0'}`} />
               </span>
-              <span className="text-sm text-gray-600">Remember me</span>
+              <span className="text-sm text-gray-400">Remember me</span>
             </button>
-            <a href="/forgot-password" className="text-sm text-green-600 hover:underline font-medium">
-              Forgot password?
-            </a>
+
+            {/* Sign up link */}
+            <p className="text-center text-sm text-gray-400">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-green-400 font-medium hover:underline">
+                Sign up now
+              </Link>
+            </p>
+
+            {/* Footer inside card */}
+            <div className="flex items-center justify-center gap-4 pt-2 text-xs text-gray-500">
+              <a href="#" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
+              <span>|</span>
+              <a href="#" className="hover:text-gray-300 transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── DESKTOP LAYOUT (hidden on mobile, shown on md and above) ── */}
+      <div className="hidden md:flex min-h-screen w-full font-sans">
+
+        {/* Left — landscape photo */}
+        <div
+          className="md:w-3/5 bg-cover bg-center"
+          style={{ backgroundImage: "url('PaisajeGranCanaria.jpg')" }}
+        />
+
+        {/* Right — form panel */}
+        <div className="md:w-2/5 flex flex-col justify-between bg-white px-10 py-8 overflow-y-auto">
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-1.5 w-fit hover:opacity-80 transition-opacity">
+            <span className="text-xl">🌍</span>
+            <span className="font-semibold text-gray-800 text-base tracking-wide">Raíces</span>
+            <span className="text-lg">🌿</span>
+          </Link>
+
+          {/* Form content */}
+          <div className="flex flex-col gap-5 w-full max-w-xs mx-auto">
+            <h1 className="text-2xl font-normal text-gray-800 leading-snug">
+              Nice to see you <span className="font-bold">again</span>
+            </h1>
+
+            {/* Login */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-500">Login</label>
+              <input
+                type="text"
+                placeholder="Email or phone number"
+                className="border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-500">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter password"
+                  className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
+            </div>
+
+            {/* Remember me + Forgot password */}
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => setRemember(v => !v)}
+                className="flex items-center gap-2 group"
+                aria-label="Toggle remember me"
+              >
+                <span className={`relative inline-flex w-10 h-5 rounded-full transition-colors duration-200 ${remember ? 'bg-green-500' : 'bg-gray-300'}`}>
+                  <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${remember ? 'translate-x-5' : 'translate-x-0'}`} />
+                </span>
+                <span className="text-sm text-gray-600">Remember me</span>
+              </button>
+              <a href="/forgot-password" className="text-sm text-green-600 hover:underline font-medium">
+                Forgot password?
+              </a>
+            </div>
+
+            {/* Sign in Button */}
+            <button
+              type="button"
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors"
+            >
+              Sign in
+            </button>
+
+            {/* Sign up link */}
+            <p className="text-center text-sm text-gray-400">
+              Dont have an account?{' '}
+              <Link to="/register" className="text-green-600 hover:underline font-medium">
+                Sign up now
+              </Link>
+            </p>
           </div>
 
-          {/* Sign in Button */}
-          <button
-            type="button"
-            className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors"
-          >
-            Sign in
-          </button>
-
-          {/* Sign up link */}
-          <p className="text-center text-sm text-gray-400">
-            Dont have an account?{' '}
-            <Link to="/register" className="text-green-600 hover:underline font-medium">
-              Sign up now
-            </Link>
-          </p>
+          {/* Footer */}
+          <p className="text-center text-xs text-gray-400">© Raíces 2026</p>
         </div>
-
-        {/* Footer */}
-        <p className="text-center text-xs text-gray-400">© Raíces 2026</p>
       </div>
-    </div>
+    </>
   );
 }
