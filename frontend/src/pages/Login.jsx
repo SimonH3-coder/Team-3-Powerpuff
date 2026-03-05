@@ -36,6 +36,15 @@ const LockIcon = () => (
   </svg>
 );
 
+const MailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className="text-gray-400 flex-shrink-0">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+    <polyline points="22,6 12,13 2,6" />
+  </svg>
+);
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -43,11 +52,11 @@ export default function Login() {
   return (
     <>
       {/* ── MOBILE LAYOUT (hidden on md and above) ── */}
-      <div className="md:hidden min-h-screen bg-[#0d2535] flex flex-col font-sans">
+      <div className="md:hidden min-h-screen bg-white flex flex-col font-sans">
 
         {/* Mobile header */}
         <div className="flex items-center justify-between px-4 py-3">
-          <button className="flex items-center justify-center w-10 h-10 text-white" aria-label="Menu">
+          <button className="flex items-center justify-center w-10 h-10 text-gray-800" aria-label="Menu">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -57,7 +66,7 @@ export default function Login() {
           </button>
           <Link to="/" className="flex items-center gap-1.5">
             <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-base font-bold select-none">🌿</span>
-            <span className="font-bold text-white text-base tracking-wide">Raíces</span>
+            <span className="font-bold text-gray-800 text-base tracking-wide">Raíces</span>
             <span className="text-lg">🍃</span>
           </Link>
           <div className="w-10" />
@@ -65,24 +74,24 @@ export default function Login() {
 
         {/* Card */}
         <div className="flex-1 flex flex-col justify-center px-5 py-6">
-          <div className="bg-[#122d47] rounded-2xl px-6 py-8 flex flex-col gap-5">
+          <div className="bg-[#122d47] rounded-2xl px-6 py-8 flex flex-col gap-5 border-2 border-dashed border-blue-300/40">
 
             {/* Title */}
             <div className="text-center">
               <h1 className="text-xl font-bold text-white leading-snug">
-                Nice to see you <span className="text-green-400">again</span>
+                Log in to NameWebsite
               </h1>
-              <p className="text-gray-400 text-sm mt-1">Sign in to continue</p>
+              <p className="text-white font-bold text-sm mt-1">Welcome back! Please enter your details</p>
             </div>
 
             {/* Inputs white card */}
             <div className="bg-white rounded-2xl px-5 py-4 flex flex-col gap-4">
-              {/* Login field */}
+              {/* Email field */}
               <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
-                <UserIcon />
+                <MailIcon />
                 <input
-                  type="text"
-                  placeholder="Email or phone number"
+                  type="email"
+                  placeholder="Email"
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
               </div>
@@ -107,46 +116,38 @@ export default function Login() {
             </div>
 
             {/* Forgot password */}
-            <div className="flex justify-end -mt-2">
-              <Link to="/forgot-password" className="text-sm text-green-400 hover:underline">
+            <div className="flex justify-center -mt-2">
+              <Link to="/forgot-password" className="text-sm text-gray-300 hover:underline">
                 Forgot password?
               </Link>
             </div>
 
-            {/* Sign in button */}
+            {/* Log in button */}
             <button
               type="button"
               className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors"
             >
-              Sign in
-            </button>
-
-            {/* Remember me */}
-            <button
-              type="button"
-              onClick={() => setRemember(v => !v)}
-              className="flex items-center justify-center gap-2"
-              aria-label="Toggle remember me"
-            >
-              <span className={`relative inline-flex w-10 h-5 rounded-full transition-colors duration-200 ${remember ? 'bg-green-500' : 'bg-gray-600'}`}>
-                <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${remember ? 'translate-x-5' : 'translate-x-0'}`} />
-              </span>
-              <span className="text-sm text-gray-400">Remember me</span>
+              Log In
             </button>
 
             {/* Sign up link */}
-            <p className="text-center text-sm text-gray-400">
+            <p className="text-center text-sm text-gray-300">
               Don't have an account?{' '}
               <Link to="/register" className="text-green-400 font-medium hover:underline">
                 Sign up now
               </Link>
             </p>
 
+            {/* Made with love */}
+            <p className="text-center text-sm text-gray-300">
+              Made with 💚 for the Canary Islands
+            </p>
+
             {/* Footer inside card */}
-            <div className="flex items-center justify-center gap-4 pt-2 text-xs text-gray-500">
-              <a href="#" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
+            <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+              <a href="#" className="hover:text-gray-200 transition-colors">Privacy Policy</a>
               <span>|</span>
-              <a href="#" className="hover:text-gray-300 transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-gray-200 transition-colors">Terms of Service</a>
             </div>
           </div>
         </div>
