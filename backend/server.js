@@ -1,0 +1,20 @@
+import express from 'express';
+import cors from 'cors';
+import forumRoutes from './routes/forum.js';
+import repliesRoutes from './routes/replies.js';
+import newsRoutes from './routes/news.js';
+import pinsRoutes from './routes/pins.js';
+import activitiesRoutes from './routes/activities.js';
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/forum', forumRoutes);
+app.use('/api/replies', repliesRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/pins', pinsRoutes);
+app.use('/api/activities', activitiesRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
