@@ -48,6 +48,7 @@ const MailIcon = () => (
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
@@ -55,21 +56,64 @@ export default function Login() {
       <div className="md:hidden min-h-screen bg-white flex flex-col font-sans">
 
         {/* Mobile header */}
-        <div className="flex items-center justify-between px-4 py-3">
-          <button className="flex items-center justify-center w-10 h-10 text-gray-800" aria-label="Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-          <Link to="/" className="flex items-center gap-1.5">
-            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-base font-bold select-none">🌿</span>
-            <span className="font-bold text-gray-800 text-base tracking-wide">Raíces</span>
-            <span className="text-lg">🍃</span>
-          </Link>
-          <div className="w-10" />
+        <div className="relative">
+          <div className="flex items-center justify-between px-4 py-3">
+            <button
+              className="flex items-center justify-center w-10 h-10 text-gray-800"
+              aria-label="Menu"
+              onClick={() => setMenuOpen(v => !v)}
+            >
+              {menuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
+            <Link to="/" className="flex items-center gap-1.5">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white text-base font-bold select-none">🌿</span>
+              <span className="font-bold text-gray-800 text-base tracking-wide">Raíces</span>
+              <span className="text-lg">🍃</span>
+            </Link>
+            <div className="w-10" />
+          </div>
+
+          {/* Dropdown menu */}
+          {menuOpen && (
+            <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-md z-50">
+              <nav className="flex flex-col px-4 py-2">
+                <Link
+                  to="/"
+                  onClick={() => setMenuOpen(false)}
+                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  Sign up
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
 
         {/* Card */}
