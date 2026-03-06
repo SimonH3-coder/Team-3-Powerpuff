@@ -3,8 +3,8 @@ import Container from "./Container";
 
 const columns = [
   {
-    title: "Product",
-    links: ["Features", "Pricing", "Integrations", "Changelog"],
+    title: "Follow Us",
+    links: ["Github", "Instagram", "Figma"],
   },
   {
     title: "Company",
@@ -54,7 +54,7 @@ function AccordionColumn({ column }) {
 
       {/* Links list */}
       <ul
-        className={`space-y-2 overflow-hidden transition-all duration-300 lg:!max-h-none lg:!opacity-100 lg:!pb-0 ${
+        className={`space-y-2 overflow-hidden transition-all duration-300 lg:max-h-none! lg:opacity-100! lg:pb-0! ${
           open ? "max-h-60 opacity-100 pb-4" : "max-h-0 opacity-0"
         }`}
       >
