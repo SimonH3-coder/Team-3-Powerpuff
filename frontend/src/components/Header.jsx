@@ -29,7 +29,7 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group" aria-label="Raíces home">
+          <Link to="/" className="flex items-center gap-2 group" aria-label="Raíces home">
             <span className="flex items-center justify-center w-9 h-9 rounded-full bg-green-accent text-white text-lg font-bold select-none">
               🌿
             </span>
@@ -39,7 +39,14 @@ export default function Header() {
             <span className="text-xl font-bold tracking-tight text-navy sm:hidden">
               Raíces
             </span>
-          </a>
+          </Link>
+          
+            <Link
+              to="/map"
+              className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded px-1"
+            >
+              Map
+            </Link>
 
           {/* Desktop nav links */}
           <nav className="hidden sm:flex items-center gap-6" aria-label="Main navigation">
@@ -74,6 +81,13 @@ export default function Header() {
         <div className="sm:hidden border-t border-slate-200 bg-white">
           <Container>
             <nav className="flex flex-col gap-2 py-4" aria-label="Mobile navigation">
+              <Link
+                to="/map"
+                className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Map
+              </Link>
               <Link
                 to="/login"
                 className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"

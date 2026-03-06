@@ -36,3 +36,461 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ==========================================================
+   MAP PAGE — full-viewport layout
+   ========================================================== */
+
+.map-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0a1929;
+}
+
+.map-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Leaflet container fills its parent completely */
+.map-leaflet-container {
+  height: 100%;
+  width: 100%;
+  display: block;
+  background: #a8d5e8; /* ocean placeholder while tiles load */
+}
+
+/* ==========================================================
+   MAP BRANDING BADGE — floating top-centre
+   ========================================================== */
+
+.map-top-badge {
+  position: absolute;
+  top: 0.875rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 1.125rem 0.5rem 0.75rem;
+  background: rgba(8, 25, 50, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 100px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+}
+
+.map-top-badge__icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.map-top-badge__title {
+  display: block;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.065em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.map-top-badge__sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.58);
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+/* ==========================================================
+   MAP GUIDE BUTTON — floating bottom-left
+   ========================================================== */
+
+@keyframes guide-btn-glow {
+  0%,
+  100% {
+    box-shadow: 0 4px 20px rgba(10, 43, 78, 0.52),
+      0 0 0 0 rgba(30, 143, 175, 0.55);
+  }
+  60% {
+    box-shadow: 0 4px 20px rgba(10, 43, 78, 0.52),
+      0 0 0 9px rgba(30, 143, 175, 0);
+  }
+}
+
+.map-guide-btn {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 1rem;
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem 0.625rem 1rem;
+  background: linear-gradient(135deg, #0d2b45 0%, #14527a 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+  /* Initial glow pulse fires 3× after 1.2 s to draw attention */
+  animation: guide-btn-glow 2.5s ease-out 1.2s 3;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.map-guide-btn:hover {
+  background: linear-gradient(135deg, #173d5c 0%, #1a618f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(10, 43, 78, 0.56);
+}
+
+.map-guide-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 12px rgba(10, 43, 78, 0.4);
+}
+
+.map-guide-btn:focus-visible {
+  outline: 3px solid #4ecdc4;
+  outline-offset: 3px;
+}
+
+/* ==========================================================
+   GUIDE OVERLAY (backdrop)
+   ========================================================== */
+
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 18, 40, 0.52);
+  z-index: 1500;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.guide-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================================
+   GUIDE PANEL — desktop: right-side drawer
+   ========================================================== */
+
+.guide-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(435px, 96vw);
+  background: #fff;
+  z-index: 1501;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(105%);
+  transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: -10px 0 60px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.guide-panel.open {
+  transform: translateX(0);
+}
+
+/* ── Panel header ── */
+.guide-panel__header {
+  position: relative;
+  padding: 2rem 1.5rem 2.5rem;
+  background: linear-gradient(148deg, #0a2342 0%, #0c4866 55%, #084e40 100%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* White wave at the bottom edge of the header */
+.guide-panel__header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+}
+
+/* Decorative compass watermark (top-right) */
+.guide-header__watermark {
+  position: absolute;
+  right: -1.25rem;
+  top: 50%;
+  transform: translateY(-52%);
+  width: 148px;
+  height: 148px;
+  opacity: 0.11;
+  pointer-events: none;
+}
+
+/* Close button (top-right corner) */
+.guide-panel__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.guide-panel__close:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.guide-panel__close:focus-visible {
+  outline: 3px solid #4ecdc4;
+  outline-offset: 2px;
+}
+
+/* Title + subtitle text block */
+.guide-panel__header-text {
+  position: relative;
+  z-index: 1;
+  padding-right: 2.75rem;
+}
+
+.guide-panel__title {
+  margin: 0 0 0.375rem;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 1.4375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.guide-panel__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+/* ==========================================================
+   GUIDE ITEMS LIST
+   ========================================================== */
+
+.guide-panel__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.25rem 0.75rem;
+  overscroll-behavior: contain;
+}
+
+.guide-panel__body::-webkit-scrollbar {
+  width: 4px;
+}
+.guide-panel__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.guide-panel__body::-webkit-scrollbar-thumb {
+  background: #cdd9e5;
+  border-radius: 2px;
+}
+
+.guide-item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.9375rem 1rem;
+  border-radius: 14px;
+  background: #f7f9fb;
+  border: 1px solid #edf0f4;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.guide-item:hover {
+  background: #f2f6fb;
+  border-color: #d5e2ed;
+  box-shadow: 0 2px 14px rgba(10, 43, 78, 0.07);
+}
+
+.guide-item__icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 2.625rem;
+  height: 2.625rem;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.guide-item__icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.guide-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.guide-item__title {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0c2340;
+  line-height: 1.35;
+  display: block;
+}
+
+.guide-item__desc {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: #596b7e;
+  line-height: 1.58;
+  display: block;
+}
+
+/* ==========================================================
+   GUIDE PANEL FOOTER
+   ========================================================== */
+
+.guide-panel__footer {
+  padding: 0.875rem 1.25rem;
+  background: #f7f9fb;
+  border-top: 1px solid #edf0f4;
+  flex-shrink: 0;
+}
+
+.guide-panel__footer-note {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: #8a9eb5;
+  line-height: 1.5;
+}
+
+/* ==========================================================
+   MOBILE  (≤ 640 px) — bottom-sheet variant
+   ========================================================== */
+
+@media (max-width: 640px) {
+  /* Compact branding badge */
+  .map-top-badge {
+    top: 0.75rem;
+    padding: 0.375rem 0.875rem 0.375rem 0.625rem;
+  }
+  .map-top-badge__sub {
+    display: none;
+  }
+
+  /* Smaller guide button */
+  .map-guide-btn {
+    bottom: 1.5rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem 0.5rem 0.875rem;
+  }
+
+  /* Bottom sheet instead of side drawer */
+  .guide-panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 88dvh;
+    border-radius: 1.25rem 1.25rem 0 0;
+    transform: translateY(105%);
+    box-shadow: 0 -12px 60px rgba(0, 0, 0, 0.24);
+  }
+
+  .guide-panel.open {
+    transform: translateY(0);
+  }
+
+  /* Drag-handle pill at top of sheet */
+  .guide-panel__header::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2.25rem;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 2px;
+    z-index: 3;
+  }
+
+  .guide-panel__header {
+    padding: 1.625rem 1.25rem 2rem;
+  }
+
+  .guide-panel__title {
+    font-size: 1.25rem;
+  }
+
+  .guide-panel__body {
+    padding: 1rem;
+  }
+
+  /* Respect iOS safe-area at bottom */
+  .guide-panel__footer {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .guide-item {
+    padding: 0.875rem;
+  }
+}
+
+/* ==========================================================
+   TABLET  (641 px – 1024 px) — slightly narrower panel
+   ========================================================== */
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .guide-panel {
+    width: min(385px, 92vw);
+  }
+}
