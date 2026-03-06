@@ -1,8 +1,216 @@
-import image from "../assets/svgs/image.svg";
-import line13 from "../assets/svgs/line-13.svg";
-import line14 from "../assets/svgs/line-14.svg";
-import vector2 from "../assets/svgs/vector-2.svg";
-import vector from "../assets/svgs/vector.svg";
+import { useEffect, useRef } from "react";
+
+/* ─── Guide content ──────────────────────────────────────────── */
+const GUIDE_ITEMS = [
+  {
+    id: 1,
+    color: "#0e6b99",
+    bg: "#dff1fb",
+    title: "Explora el territorio",
+    desc: "Haz clic sobre una isla, zona o marcador para ver información detallada del área.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
+        <path
+          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    id: 2,
+    color: "#1e7e5e",
+    bg: "#dcf4ec",
+    title: "Zoom y navegación",
+    desc: "Usa los controles de zoom o la rueda del ratón para acercarte y explorar cada rincón.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
+        <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.75" />
+        <path
+          d="m21 21-4.35-4.35M11 8v6m-3-3h6"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    id: 3,
+    color: "#b55d0d",
+    bg: "#fdeedd",
+    title: "Puntos de interés",
+    desc: "Descubre espacios naturales, áreas protegidas y lugares destacados de las islas.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
+        <path
+          d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"
+          stroke="currentColor"
+          strokeWidth="1.75"
+        />
+        <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.75" />
+      </svg>
+    ),
+  },
+  {
+    id: 4,
+    color: "#3757a0",
+    bg: "#e5ecf8",
+    title: "Capas del mapa",
+    desc: "Alterna entre las diferentes capas disponibles para personalizar tu visualización del territorio.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
+        <path
+          d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    id: 5,
+    color: "#7635b0",
+    bg: "#f1e8fc",
+    title: "Foro y comunidad",
+    desc: "Participa en el foro usando la ubicación del mapa y comparte tus experiencias.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
+        <path
+          d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+];
+
+/* ─── Component ──────────────────────────────────────────────── */
+export default function MapGuide({ isOpen, onClose }) {
+  const closeBtnRef = useRef(null);
+
+  /* Close on Escape */
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, onClose]);
+
+  /* Move focus to close button when panel opens */
+  useEffect(() => {
+    if (isOpen) closeBtnRef.current?.focus();
+  }, [isOpen]);
+
+  /* Lock body scroll while panel is open */
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  return (
+    <>
+      {/* ── Backdrop ── */}
+      <div
+        className={`guide-overlay${isOpen ? " open" : ""}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* ── Panel ── */}
+      <aside
+        className={`guide-panel${isOpen ? " open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Guía del mapa"
+        tabIndex={-1}
+      >
+        {/* Header */}
+        <div className="guide-panel__header">
+          {/* Decorative compass watermark */}
+          <svg
+            className="guide-header__watermark"
+            viewBox="0 0 120 120"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle cx="60" cy="60" r="52" stroke="white" strokeWidth="1.5" />
+            <circle cx="60" cy="60" r="36" stroke="white" strokeWidth="1" strokeDasharray="4 4" />
+            <circle cx="60" cy="60" r="6" fill="white" />
+            <polygon points="60,8 65,52 60,60 55,52" fill="white" />
+            <polygon points="60,112 55,68 60,60 65,68" fill="rgba(255,255,255,0.35)" />
+            <polygon points="112,60 68,55 60,60 68,65" fill="rgba(255,255,255,0.55)" />
+            <polygon points="8,60 52,65 60,60 52,55" fill="rgba(255,255,255,0.35)" />
+          </svg>
+
+          {/* Close button */}
+          <button
+            ref={closeBtnRef}
+            className="guide-panel__close"
+            onClick={onClose}
+            aria-label="Cerrar guía del mapa"
+          >
+            <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
+              <path
+                d="M18 6L6 18M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2.25"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+
+          {/* Title block */}
+          <div className="guide-panel__header-text">
+            <h2 className="guide-panel__title">Guía del mapa</h2>
+            <p className="guide-panel__subtitle">
+              Descubre las Islas Canarias a través de este mapa interactivo
+            </p>
+          </div>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="guide-panel__body">
+          <ul className="guide-item-list" role="list">
+            {GUIDE_ITEMS.map((item) => (
+              <li className="guide-item" key={item.id}>
+                <div
+                  className="guide-item__icon-wrap"
+                  style={{ color: item.color, background: item.bg }}
+                  aria-hidden="true"
+                >
+                  {item.icon}
+                </div>
+                <div className="guide-item__content">
+                  <strong className="guide-item__title">{item.title}</strong>
+                  <span className="guide-item__desc">{item.desc}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Footer */}
+        <div className="guide-panel__footer">
+          <p className="guide-panel__footer-note">
+            🌋 Explora libremente el territorio de las islas
+          </p>
+        </div>
+      </aside>
+    </>
+  );
+}
+
 
 export const Frame = () => {
   const guideItems = [
