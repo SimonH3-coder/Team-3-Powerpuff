@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import profilesRoutes from './routes/profiles.js';
 import forumRoutes from './routes/forum.js';
 import repliesRoutes from './routes/replies.js';
 import newsRoutes from './routes/news.js';
@@ -15,6 +16,7 @@ app.use('/api/replies', repliesRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/pins', pinsRoutes);
 app.use('/api/activities', activitiesRoutes);
+app.use('/api/profiles', profilesRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
