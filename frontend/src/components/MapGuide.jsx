@@ -1,8 +1,8 @@
-import image from "./image.svg";
-import line13 from "./line-13.svg";
-import line14 from "./line-14.svg";
-import vector2 from "./vector-2.svg";
-import vector from "./vector.svg";
+import image from "../assets/svgs/image.svg";
+import line13 from "../assets/svgs/line-13.svg";
+import line14 from "../assets/svgs/line-14.svg";
+import vector2 from "../assets/svgs/vector-2.svg";
+import vector from "../assets/svgs/vector.svg";
 
 export const Frame = () => {
   const guideItems = [
