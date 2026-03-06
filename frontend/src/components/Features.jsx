@@ -1,7 +1,7 @@
-import PinImage from "../assets/pin-container.png";
-import wildlifeProtectionImage from "../assets/wildlife-protection.png";
-import electricityTrackerImage from "../assets/electricity-tracker.png";
-import islandStressLevelImage from "../assets/island-stress-level.png";
+import PinImage from "../assets/pin-container.svg";
+import wildlifeProtectionImage from "../assets/wildlife-protection.svg";
+import electricityTrackerImage from "../assets/electricity-tracker.svg";
+import islandStressLevelImage from "../assets/island-stress-level.svg";
 
 export default function Features() {
   return (
@@ -16,8 +16,7 @@ export default function Features() {
           An application to track the electricity consumption and connect with like-minded people.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mr-5 ml-5">
   {/* Box 1 */}
   <article className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
     <div className="mb-4">
