@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
       <Container>
-        <div className="flex items-center justify-between h-16 sm:h-[72px]">
+        <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Mobile hamburger */}
           <button
             className="sm:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky"
