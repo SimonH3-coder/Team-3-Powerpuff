@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Container from "./Container";
 
 export default function Header() {
@@ -42,18 +43,18 @@ export default function Header() {
 
           {/* Desktop nav links */}
           <nav className="hidden sm:flex items-center gap-6" aria-label="Main navigation">
-            <a
-              href="#"
+            <Link
+              to="/login"
               className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded px-1"
             >
               Log in
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/register"
               className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-white bg-green-accent hover:bg-green-accent-hover rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-accent focus:ring-offset-2"
             >
               Sign up
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile user icon */}
@@ -73,18 +74,20 @@ export default function Header() {
         <div className="sm:hidden border-t border-slate-200 bg-white">
           <Container>
             <nav className="flex flex-col gap-2 py-4" aria-label="Mobile navigation">
-              <a
-                href="#"
+              <Link
+                to="/login"
                 className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Log in
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/register"
                 className="block py-2 px-3 rounded-lg text-base font-semibold text-white bg-green-accent hover:bg-green-accent-hover text-center transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Sign up
-              </a>
+              </Link>
             </nav>
           </Container>
         </div>
