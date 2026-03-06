@@ -3,8 +3,8 @@ import Container from "./Container";
 
 const columns = [
   {
-    title: "Product",
-    links: ["Features", "Pricing", "Integrations", "Changelog"],
+    title: "Follow Us",
+    links: ["Github", "Instagram", "Figma"],
   },
   {
     title: "Company",
