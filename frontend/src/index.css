@@ -16,7 +16,10 @@
   --font-poppins: "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-orbitron: "Orbitron", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+:root {
 
+  
+}
 /* Base resets */
 *,
 *::before,
