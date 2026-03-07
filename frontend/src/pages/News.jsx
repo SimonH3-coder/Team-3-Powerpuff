@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const API_KEY = "pub_b8e0af58a4604cefa2612ff975b9941c";
-const API_URL = "https://newsdata.io/api/1/news";
-
-const NEWS_QUERY = `"Canary Islands" sustainability OR environment OR renewable OR biodiversity OR ocean OR conservation`;
+const API_URL = "http://localhost:3000/api/newsdata";
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1536625737227-92a1fc042939?w=1200&q=80";
 
@@ -140,14 +137,8 @@ export default function News() {
     async function fetchNews() {
       setLoading(true);
       setError(null);
-      const params = new URLSearchParams({
-        apikey: API_KEY,
-        q: NEWS_QUERY,
-        language: "en",
-        size: "10",
-      });
       try {
-        const res = await fetch(`${API_URL}?${params}`);
+        const res = await fetch(API_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (json.status !== "success") throw new Error(json.message ?? "API error");
