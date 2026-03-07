@@ -16,20 +16,11 @@ const Map = () => {
         {/* Leaflet map fills the entire wrapper */}
         <LeafletMap />
 
-        {/* Branding badge — top-centre, non-interactive */}
-        <div className="map-top-badge" aria-hidden="true">
-          <span className="map-top-badge__icon">🌋</span>
-          <div>
-            <span className="map-top-badge__title">Islas Canarias</span>
-            <span className="map-top-badge__sub">Explora el territorio natural</span>
-          </div>
-        </div>
-
         {/* Guide trigger button — bottom-left, clear of Leaflet controls */}
         <button
           className="map-guide-btn"
           onClick={openGuide}
-          aria-label="Abrir guía del mapa"
+          aria-label="Open map guide"
           aria-haspopup="dialog"
           aria-expanded={guideOpen}
         >
@@ -50,7 +41,7 @@ const Map = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <span>Guía del mapa</span>
+          <span>Map guide</span>
         </button>
 
         {/* Guide panel (drawer on desktop, bottom-sheet on mobile) */}
