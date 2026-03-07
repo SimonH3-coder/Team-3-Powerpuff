@@ -6,6 +6,7 @@ import repliesRoutes from './routes/replies.js';
 import newsRoutes from './routes/news.js';
 import pinsRoutes from './routes/pins.js';
 import activitiesRoutes from './routes/activities.js';
+import newsdataRoutes from './routes/newsdata.js';
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/pins', pinsRoutes);
 app.use('/api/activities', activitiesRoutes);
 app.use('/api/profiles', profilesRoutes);
+app.use('/api/newsdata', newsdataRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
