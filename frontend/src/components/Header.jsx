@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "./Container";
+import ecoLogo from "../assets/ecoIsland1logo.svg";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,9 +31,7 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group" aria-label="Raíces home">
-            <span className="flex items-center justify-center w-9 h-9 rounded-full bg-green-accent text-white text-lg font-bold select-none">
-              🌿
-            </span>
+            <img src={ecoLogo} alt="Raíces logo" className="w-9 h-9 rounded-full" />
             <span className="text-xl font-bold tracking-tight text-navy hidden sm:inline">
               Raíces
             </span>
