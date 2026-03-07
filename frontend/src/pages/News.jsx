@@ -169,34 +169,6 @@ export default function News() {
       <Header />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-navy py-20 sm:py-28">
-          <div className="pointer-events-none absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full bg-green-accent/10 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-16 right-0 w-[400px] h-[400px] rounded-full bg-sky/18 blur-3xl" />
-          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-green-accent/15 text-green-accent text-[11px] font-black mb-7 border border-green-accent/25 uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-green-accent animate-pulse" />
-              Updated with environmental news
-            </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight mb-5">
-              Sustainable{" "}
-              <span
-                className="text-transparent bg-clip-text"
-                style={{ backgroundImage: "linear-gradient(135deg, #25CD39 0%, #6FA1B0 100%)" }}
-              >
-                News
-              </span>
-              <br />
-              <span className="text-white/90 text-3xl sm:text-5xl font-bold">
-                from the Canary Islands
-              </span>
-            </h1>
-            <p className="max-w-xl mx-auto text-slate-300/85 text-base sm:text-lg">
-              Latest on climate, biodiversity, renewable energy and conservation on the islands
-            </p>
-          </div>
-        </section>
-
         {/* Content */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10">
           {loading && (
