@@ -13,6 +13,15 @@ router.get('/', async (_req, res) => {
   res.json(data);
 });
 
+router.get('/user/:userId', checkAuth, async (req, res) => {
+  const userId = req.params.userId;
+
+  const { data, error } = await supabase.from('forum').select('*').eq('poster_id', userId);
+
+  if (error) return res.status(400).json({ error: error.message });
+  res.json(data);
+});
+
 router.post('/', checkAuth, upload.single('image'), async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -69,6 +78,68 @@ router.delete('/admin/:id', checkAdmin, async (req, res) => {
   const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ message: 'Topic deleted' });
+});
+
+//Section for like/reblog routes
+
+router.post('/:id/like', checkAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.id;
+
+    //Checks for duplicates so users cant just infinitely like posts.
+    //TODO: Maybe use this for logic that'll make it so we DECREMENT and REMOVE the interaction if we find a duplicate? Could be kinda sick
+    const { data: existing, error: checkError } = await supabase
+      .from('post_interactions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('post_id', postId)
+      .eq('interaction_type', 'like')
+      .single();
+
+    if (existing) return res.status(400).json({ error: 'Already liked this post' });
+
+    await supabase.from('post_interactions').insert([{ user_id: userId, post_id: postId, interaction_type: 'like' }]);
+
+    //Makes the number go up
+    const { error } = await supabase.rpc('increment_likes', { post_id: parseInt(postId) });
+
+    if (error) return res.status(400).json({ error: error.message });
+
+    res.json({ message: 'Post liked' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//Here we just use the same pattern for everything but with retweets, so just refer back to the corresponding section in the like code!
+router.post('/:id/retweet', checkAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const postId = req.params.id;
+
+    const { data: existing, error: checkError } = await supabase
+      .from('post_interactions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('post_id', postId)
+      .eq('interaction_type', 'retweet')
+      .single();
+
+    if (existing) return res.status(400).json({ error: 'Already retweeted this post' });
+
+    await supabase
+      .from('post_interactions')
+      .insert([{ user_id: userId, post_id: postId, interaction_type: 'retweet' }]);
+
+    const { error } = await supabase.rpc('increment_retweets', { post_id: parseInt(postId) });
+
+    if (error) return res.status(400).json({ error: error.message });
+
+    res.json({ message: 'Post retweeted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;
