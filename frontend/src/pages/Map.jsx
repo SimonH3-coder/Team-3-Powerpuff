@@ -8,31 +8,24 @@ import { useEffect, useRef, useState, useCallback } from "react";
 const LAYERS = [
   {
     id: "standard",
-    label: "🗺️ Normal",
+    label: "Normal",
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 19,
   },
   {
     id: "satellite",
-    label: "🛰️ Satélite",
+    label: "satellite",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     attribution: "Tiles &copy; Esri",
     maxZoom: 19,
   },
   {
     id: "terrain",
-    label: "⛰️ Terreno",
+    label: "Terrain",
     url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
     attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
     maxZoom: 17,
-  },
-  {
-    id: "rain",
-    label: "🌧️ Lluvia",
-    url: "https://tilecache.rainviewer.com/v2/coverage/0/256/{z}/{x}/{y}/2/1_1.png",
-    attribution: '&copy; <a href="https://rainviewer.com">RainViewer</a>',
-    maxZoom: 19,
   },
 ];
 
@@ -44,7 +37,7 @@ const Map = () => {
   return (
     <div className="map-page">
       <Header />
-      <main className="map-wrapper" aria-label="Mapa interactivo de las Islas Canarias">
+      <main className="map-wrapper" aria-label="Interactive Map of the Canary Islands">
         <LeafletMap />
 
         <button
@@ -139,7 +132,7 @@ function LeafletMap() {
         ref={containerRef}
         className="map-leaflet-container"
         role="application"
-        aria-label="Mapa interactivo de las Islas Canarias"
+        aria-label="Interactive map of the Canary Islands with various layers and clickable zones for forum posts"
       />
 
       {/* Layer switcher */}
@@ -159,7 +152,7 @@ function LeafletMap() {
         }}
       >
         <p style={{ margin: "0 0 4px 0", fontSize: "11px", fontWeight: "bold", color: "#555", textAlign: "center" }}>
-          Capas
+          Layers
         </p>
         {LAYERS.map((layer) => (
           <button
@@ -205,7 +198,7 @@ function LeafletMap() {
           {/* TODO: conectar con el foro cuando esté listo */}
           <button
             disabled
-            title="Próximamente disponible"
+            title="Coming Soon"
             style={{
               padding: "5px 10px",
               borderRadius: "6px",
@@ -218,7 +211,7 @@ function LeafletMap() {
               whiteSpace: "nowrap",
             }}
           >
-            💬 Post al foro (próximamente)
+            💬 Post to the forum (coming soon)
           </button>
           <button
             onClick={() => setClickedPlace(null)}

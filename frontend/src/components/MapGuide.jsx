@@ -6,8 +6,8 @@ const GUIDE_ITEMS = [
     id: 1,
     color: "#0e6b99",
     bg: "#dff1fb",
-    title: "Moverse por el mapa",
-    desc: "Usa la rueda del ratón para hacer zoom y arrastra para moverte.",
+    title: "Move around the map",
+    desc: "Use the mouse wheel to zoom and drag to move.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.75" />
@@ -19,8 +19,8 @@ const GUIDE_ITEMS = [
     id: 2,
     color: "#1e7e5e",
     bg: "#dcf4ec",
-    title: "Cambiar la capa del mapa",
-    desc: "Arriba a la derecha puedes cambiar entre mapa normal, satélite, terreno y lluvia.",
+    title: "Change map layers",
+    desc: "Click the layers button to switch between standard, satellite, and terrain views.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
@@ -31,8 +31,8 @@ const GUIDE_ITEMS = [
     id: 3,
     color: "#7635b0",
     bg: "#f1e8fc",
-    title: "Publicar en el foro (próximamente)",
-    desc: "Haz clic en cualquier zona y podrás crear un post en el foro sobre ese lugar.",
+    title: "Post to the forum (coming soon)",
+    desc: "Click anywhere on the map to create a post about that location.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
@@ -151,7 +151,7 @@ export default function MapGuide({ isOpen, onClose }) {
         {/* Footer */}
         <div className="guide-panel__footer">
           <p className="guide-panel__footer-note">
-            🌋 ¡Explora las Islas Canarias!
+            This map uses data from OpenStreetMap and is built with React Leaflet.
           </p>
         </div>
       </aside>
