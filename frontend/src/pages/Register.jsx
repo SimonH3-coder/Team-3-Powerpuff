@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -49,6 +49,46 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  async function handleRegister(e) {
+    e.preventDefault();
+    setError('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong');
+      } else {
+        navigate('/login');
+      }
+    } catch (err) {
+      setError('Could not connect to the server');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -130,22 +170,14 @@ export default function Register() {
 
             {/* Inputs white card */}
             <div className="bg-white rounded-2xl px-5 py-4 flex flex-col gap-4">
-              {/* Login/username field */}
-              <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
-                <UserIcon />
-                <input
-                  type="text"
-                  placeholder="Login"
-                  className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
-                />
-              </div>
-
               {/* Email field */}
               <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
                 <MailIcon />
                 <input
                   type="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
               </div>
@@ -156,6 +188,8 @@ export default function Register() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
                 <button
@@ -174,6 +208,8 @@ export default function Register() {
                 <input
                   type={showConfirm ? 'text' : 'password'}
                   placeholder="Repeat password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
                 <button
@@ -187,12 +223,17 @@ export default function Register() {
               </div>
             </div>
 
+            {/* Error message */}
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
             {/* Sign Up button */}
             <button
               type="button"
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors"
+              onClick={handleRegister}
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors disabled:opacity-60"
             >
-              Sign Up
+              {loading ? 'Creating account...' : 'Sign Up'}
             </button>
 
             {/* Terms */}
@@ -252,6 +293,8 @@ export default function Register() {
               <input
                 type="email"
                 placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 className="border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
@@ -263,6 +306,8 @@ export default function Register() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
                 <button
@@ -283,6 +328,8 @@ export default function Register() {
                 <input
                   type={showConfirm ? 'text' : 'password'}
                   placeholder="Enter password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
                 <button
@@ -296,12 +343,17 @@ export default function Register() {
               </div>
             </div>
 
+            {/* Error message */}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
             {/* Create Account Button */}
             <button
               type="button"
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors mt-1"
+              onClick={handleRegister}
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors mt-1 disabled:opacity-60"
             >
-              Create Account
+              {loading ? 'Creating account...' : 'Create Account'}
             </button>
 
             {/* Sign in link */}
