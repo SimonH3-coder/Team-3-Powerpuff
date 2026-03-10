@@ -11,18 +11,18 @@ export default function SearchBarForum({ onSearch }) {
 
     return (
         <section className="flex flex-col items-center gap-4">
-            <h1 className="text-center text-black text-[2.5rem] font-normal font-sans">
+            <h1 className="text-center text-black text-[2.5rem] font-normal font-montserrat">
                 For<span className="text-dark-green">um</span>
             </h1>
 
-            <div className="flex justify-center items-center w-47.75 px-4 py-2.25 gap-2.5 rounded-[1.75rem] border border-black bg-[#003D60]">
+            <div className="flex justify-center items-center md:w-120 w-47.75 px-4 py-2.25 gap-2.5 rounded-[1.75rem] border border-black bg-[#003D60]">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
                     placeholder="Find anything"
-                    className="bg-transparent text-white text-[1rem] font-bold font-poppins outline-none w-full placeholder-white/60"
+                    className="bg-transparent  text-white text-[1rem] font-bold font-pop outline-none w-full placeholder-white/60"
                 />
                 <button onClick={handleSubmit}>
                     <svg src={searchIcon} className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
