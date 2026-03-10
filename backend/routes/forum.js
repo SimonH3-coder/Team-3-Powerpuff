@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   res.json(data);
 });
 
-router.post('/', checkAuth, upload.single('images'), async (req, res) => {
+router.post('/', checkAuth, upload.single('image'), async (req, res) => {
   try {
     const { poster_id, title, content } = req.body;
     let image_url = null;
@@ -29,6 +29,7 @@ router.post('/', checkAuth, upload.single('images'), async (req, res) => {
 
       image_url = publicUrl.publicUrl;
     }
+
     const { data, error } = await supabase
       .from('forum')
       .insert([{ poster_id, title, content, image_url, created_at: new Date(), modified_at: new Date() }]);

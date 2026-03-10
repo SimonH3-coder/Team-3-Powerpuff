@@ -2,6 +2,7 @@ import express from 'express';
 import { supabase } from '../supabase-client.js';
 import { checkAuth } from '../middleware/checkAuth.js';
 import { checkAdmin } from '../middleware/checkAdmin.js';
+import multer from 'multer';
 
 const router = express.Router();
 
