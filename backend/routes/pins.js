@@ -1,7 +1,7 @@
 import express from 'express';
-import { checkAuth } from '../middleware/checkAuth';
-import { checkAdmin } from '../middleware/checkAdmin';
-import { supabase } from '../supabase-client';
+import { checkAuth } from '../middleware/checkAuth.js';
+import { checkAdmin } from '../middleware/checkAdmin.js';
+import { supabase } from '../supabase-client.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -16,7 +16,7 @@ router.post('/', checkAuth, async (req, res) => {
   const { user_id, x_coord, y_coord, comment } = req.body;
   const { data, error } = await supabase
     .from('pins')
-    .insert([{ user_id, x_coord, y_coord, comment, createdAt: new Date(), modifiedAt: new Date() }]);
+    .insert([{ user_id, x_coord, y_coord, comment, created_at: new Date() }]);
 
   if (error) return res.status(400).json({ error: error.message });
 

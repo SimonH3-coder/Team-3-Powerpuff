@@ -1,7 +1,7 @@
 import express from 'express';
-import { checkAuth } from '../middleware/checkAuth';
-import { checkAdmin } from '../middleware/checkAdmin';
-import { supabase } from '../supabase-client';
+import { checkAuth } from '../middleware/checkAuth.js';
+import { checkAdmin } from '../middleware/checkAdmin.js';
+import { supabase } from '../supabase-client.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -14,7 +14,7 @@ router.post('/', checkAuth, async (req, res) => {
   const { poster_id, title, content } = req.body;
   const { data, error } = await supabase
     .from('forum')
-    .insert([{ poster_id, title, content, createdAt: new Date(), modifiedAt: new Date() }]);
+    .insert([{ poster_id, title, content, created_at: new Date(), modified_at: new Date() }]);
 
   if (error) return res.status(400).json({ error: error.message });
 
@@ -25,7 +25,7 @@ router.put('/:id', checkAuth, async (req, res) => {
   const { content } = req.body;
   const { data, error } = await supabase
     .from('forum')
-    .update({ content, modifiedAt: new Date() })
+    .update({ content, modified_at: new Date() })
     .eq('id', req.params.id);
 
   if (error) return res.status(400).json({ error: error.message });

@@ -1,7 +1,7 @@
 import express from 'express';
-import { checkAuth } from '../middleware/checkAuth';
-import { checkAdmin } from '../middleware/checkAdmin';
-import { supabase } from '../supabase-client';
+import { checkAuth } from '../middleware/checkAuth.js';
+import { checkAdmin } from '../middleware/checkAdmin.js';
+import { supabase } from '../supabase-client.js';
 const router = express.Router();
 
 router.get('/:topicId', async (req, res) => {
@@ -11,10 +11,10 @@ router.get('/:topicId', async (req, res) => {
 });
 
 router.post('/', checkAuth, async (req, res) => {
-  const { topic_id, poster_id, content } = req.body;
+  const { topic_id, poster_id, reply } = req.body;
   const { data, error } = await supabase
     .from('replies')
-    .insert([{ topic_id, poster_id, content, createdAt: new Date(), modifiedAt: new Date() }]);
+    .insert([{ topic_id, poster_id, reply, created_at: new Date(), modified_at: new Date() }]);
 
   if (error) return res.status(400).json({ error: error.message });
 
@@ -22,10 +22,10 @@ router.post('/', checkAuth, async (req, res) => {
 });
 
 router.put('/:id', checkAuth, async (req, res) => {
-  const { content } = req.body;
+  const { reply } = req.body;
   const { data, error } = await supabase
     .from('replies')
-    .update({ content, modifiedAt: new Date() })
+    .update({ reply, modifiedAt: new Date() })
     .eq('id', req.params.id);
 
   if (error) return res.status(400).json({ error: error.message });

@@ -1,31 +1,29 @@
 import express from 'express';
-import { supabase } from '../supabase-client';
-import { checkAuth } from '../middleware/checkAuth';
+import { supabase } from '../supabase-client.js';
+import { checkAuth } from '../middleware/checkAuth.js';
 
 const router = express.Router();
 
 router.get('/', checkAuth, async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.user.id;
   const { data, error } = await supabase.from('activities').select('*').eq('user_id', userId);
-
   if (error) return res.status(400).json({ error: error.message });
-
   res.json(data);
 });
 
 router.post('/', checkAuth, async (req, res) => {
-  //post logic
   const { user_id, activity_name, cost, time } = req.body;
   const { data, error } = await supabase.from('activities').insert([{ user_id, activity_name, cost, time }]);
-
   if (error) return res.status(400).json({ error: error.message });
-
   res.json(data);
 });
 
 router.put('/:id', checkAuth, async (req, res) => {
   const { activity_name, cost, time } = req.body;
-  const { data, error } = await supabase.from('activities').update({ activity_name, cost, time });
+  const { data, error } = await supabase
+    .from('activities')
+    .update({ activity_name, cost, time })
+    .eq('id', req.params.id);
 
   if (error) return res.status(400).json({ error: error.message });
 
