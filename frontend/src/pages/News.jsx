@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const API_URL = "http://localhost:3000/api/newsdata";
+const API_KEY = import.meta.env.VITE_NEWSDATA_API_KEY;
+const API_URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&q="Canary Islands" sustainability OR environment OR renewable OR biodiversity OR ocean OR conservation&language=en&size=10`;
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1536625737227-92a1fc042939?w=1200&q=80";
 
