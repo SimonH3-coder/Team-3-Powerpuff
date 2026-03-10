@@ -1,6 +1,6 @@
 import express from 'express';
-import { supabase } from '../supabase-client';
-import { checkAdmin } from '../middleware/checkAdmin';
+import { supabase } from '../supabase-client.js';
+import { checkAdmin } from '../middleware/checkAdmin.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', checkAdmin, async (req, res) => {
   const { writer_id, title, content } = req.body;
-  const { data, error } = await supabase.from('news').insert([{ writer_id, title, content, createdAt: new Date() }]);
+  const { data, error } = await supabase.from('news').insert([{ writer_id, title, content, created_at: new Date() }]);
 
   if (error) return res.status(400).json({ error: error.message });
 
