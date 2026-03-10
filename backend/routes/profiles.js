@@ -38,11 +38,17 @@ router.put('/:id/avatar', checkAuth, upload.single('image'), async (req, res) =>
         contentType: req.file.mimetype,
       });
 
-      if (uploadError) return res.status(400).json({ error: uploadError.message });
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        return res.status(400).json({ error: uploadError.message });
+      }
 
       const { data: publicUrl } = supabase.storage.from('avatars').getPublicUrl(fileName);
 
       avatar_url = publicUrl.publicUrl;
+      console.log('Avatar URL:', avatar_url);
+    } else {
+      console.log('No file received in request');
     }
 
     const { data, error } = await supabase.from('profiles').update({ avatar_url }).eq('id', userId).single();
@@ -51,6 +57,7 @@ router.put('/:id/avatar', checkAuth, upload.single('image'), async (req, res) =>
 
     res.json(data);
   } catch (err) {
+    console.error('Avatar upload error:', err);
     res.status(500).json({ error: err.message });
   }
 });
