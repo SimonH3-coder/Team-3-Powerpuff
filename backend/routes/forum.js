@@ -99,7 +99,9 @@ router.post('/:id/like', checkAuth, async (req, res) => {
 
     if (existing) return res.status(400).json({ error: 'Already liked this post' });
 
-    await supabase.from('post_interactions').insert([{ user_id: userId, post_id: postId, interaction_type: 'like' }]);
+    await supabase
+      .from('post_interactions')
+      .insert([{ user_id: userId, post_id: postId, interaction_type: 'like', created_at: new Date() }]);
 
     //Makes the number go up
     const { error } = await supabase.rpc('increment_likes', { post_id: parseInt(postId) });
@@ -130,7 +132,7 @@ router.post('/:id/retweet', checkAuth, async (req, res) => {
 
     await supabase
       .from('post_interactions')
-      .insert([{ user_id: userId, post_id: postId, interaction_type: 'retweet' }]);
+      .insert([{ user_id: userId, post_id: postId, interaction_type: 'retweet', created_at: new Date() }]);
 
     const { error } = await supabase.rpc('increment_retweets', { post_id: parseInt(postId) });
 
