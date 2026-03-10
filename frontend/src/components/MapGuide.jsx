@@ -6,8 +6,8 @@ const GUIDE_ITEMS = [
     id: 1,
     color: "#0e6b99",
     bg: "#dff1fb",
-    title: "Explora el territorio",
-    desc: "Haz clic sobre una isla, zona o marcador para ver información detallada del área.",
+    title: "Explore the territory",
+    desc: "Click on an island, zone or marker to see detailed information about that area.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path
@@ -24,8 +24,8 @@ const GUIDE_ITEMS = [
     id: 2,
     color: "#1e7e5e",
     bg: "#dcf4ec",
-    title: "Zoom y navegación",
-    desc: "Usa los controles de zoom o la rueda del ratón para acercarte y explorar cada rincón.",
+    title: "Zoom and navigation",
+    desc: "Use the zoom controls or scroll wheel to get closer and explore every corner.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.75" />
@@ -42,8 +42,8 @@ const GUIDE_ITEMS = [
     id: 3,
     color: "#b55d0d",
     bg: "#fdeedd",
-    title: "Puntos de interés",
-    desc: "Descubre espacios naturales, áreas protegidas y lugares destacados de las islas.",
+    title: "Points of interest",
+    desc: "Discover natural spaces, protected areas and highlights across the islands.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path
@@ -59,8 +59,8 @@ const GUIDE_ITEMS = [
     id: 4,
     color: "#3757a0",
     bg: "#e5ecf8",
-    title: "Capas del mapa",
-    desc: "Alterna entre las diferentes capas disponibles para personalizar tu visualización del territorio.",
+    title: "Map layers",
+    desc: "Switch between the available layers to customize how the territory is displayed.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path
@@ -77,8 +77,8 @@ const GUIDE_ITEMS = [
     id: 5,
     color: "#7635b0",
     bg: "#f1e8fc",
-    title: "Foro y comunidad",
-    desc: "Participa en el foro usando la ubicación del mapa y comparte tus experiencias.",
+    title: "Forum and community",
+    desc: "Join the forum using a map location and share your experiences with others.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
         <path
@@ -132,7 +132,7 @@ export default function MapGuide({ isOpen, onClose }) {
         className={`guide-panel${isOpen ? " open" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Guía del mapa"
+        aria-label="Map guide"
         tabIndex={-1}
       >
         {/* Header */}
@@ -158,7 +158,7 @@ export default function MapGuide({ isOpen, onClose }) {
             ref={closeBtnRef}
             className="guide-panel__close"
             onClick={onClose}
-            aria-label="Cerrar guía del mapa"
+          aria-label="Close map guide"
           >
             <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
               <path
@@ -172,9 +172,9 @@ export default function MapGuide({ isOpen, onClose }) {
 
           {/* Title block */}
           <div className="guide-panel__header-text">
-            <h2 className="guide-panel__title">Guía del mapa</h2>
+            <h2 className="guide-panel__title">Map guide</h2>
             <p className="guide-panel__subtitle">
-              Descubre las Islas Canarias a través de este mapa interactivo
+              Discover the Canary Islands through this interactive map
             </p>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function MapGuide({ isOpen, onClose }) {
         {/* Footer */}
         <div className="guide-panel__footer">
           <p className="guide-panel__footer-note">
-            🌋 Explora libremente el territorio de las islas
+            🌋 Freely explore the islands' territory
           </p>
         </div>
       </aside>
