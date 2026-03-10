@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import ProfileImage from '../components/profileImage';
 import WeatherBar from '../components/Weatherbar';
 import Header from "../components/Header";
-import ForumPost from "../components/ForumPosts";
 
 export default function Profile() {
     return(
@@ -11,7 +10,6 @@ export default function Profile() {
         <Header />
         <ProfileImage />
         <WeatherBar />
-        <ForumPost />
         </>
     )
 }

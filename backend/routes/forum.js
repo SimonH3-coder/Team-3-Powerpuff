@@ -1,13 +1,13 @@
 import express from 'express';
 import { checkAuth } from '../middleware/checkAuth.js';
 import { checkAdmin } from '../middleware/checkAdmin.js';
-import { supabase } from '../supabase-client.js';
+import { supabase, createUserClient } from '../supabase-client.js';
 import multer from 'multer';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
   const { data, error } = await supabase.from('forum').select('*');
   if (error) return res.status(400).json({ error: error.message });
   res.json(data);
@@ -15,7 +15,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', checkAuth, upload.single('image'), async (req, res) => {
   try {
-    const { poster_id, title, content } = req.body;
+    const { title, content } = req.body;
+    const poster_id = req.user.id;
+    const token = req.headers.authorization.replace('Bearer ', '');
+    const userSupabase = createUserClient(token);
     let image_url = null;
 
     if (req.file) {
@@ -30,7 +33,7 @@ router.post('/', checkAuth, upload.single('image'), async (req, res) => {
       image_url = publicUrl.publicUrl;
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await userSupabase
       .from('forum')
       .insert([{ poster_id, title, content, image_url, created_at: new Date(), modified_at: new Date() }]);
 

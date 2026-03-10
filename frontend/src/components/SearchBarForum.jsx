@@ -19,7 +19,10 @@ export default function SearchBarForum({ onSearch }) {
                 <input
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (onSearch) onSearch(e.target.value); // 👈 just add this line
+                    }}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
                     placeholder="Find anything"
                     className="bg-transparent  text-white text-[1rem] font-bold font-pop outline-none w-full placeholder-white/60"

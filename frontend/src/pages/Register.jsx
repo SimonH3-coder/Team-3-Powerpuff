@@ -50,6 +50,7 @@ export default function Register() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -59,6 +60,11 @@ export default function Register() {
   async function handleRegister(e) {
     e.preventDefault();
     setError('');
+
+    if (!username.trim()) {
+      setError('Username is required');
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -75,13 +81,13 @@ export default function Register() {
       const res = await fetch('http://localhost:3000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, username }), 
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || 'Something went wrong');
       } else {
-        navigate('/login');
+        navigate('/');
       }
     } catch (err) {
       setError('Could not connect to the server');
@@ -92,10 +98,9 @@ export default function Register() {
 
   return (
     <>
-      {/* ── MOBILE LAYOUT (hidden on md and above) ── */}
+      {/* ── MOBILE LAYOUT ── */}
       <div className="md:hidden min-h-screen bg-white flex flex-col font-sans">
 
-        {/* Mobile header */}
         <div className="relative">
           <div className="flex items-center justify-between px-4 py-3">
             <button
@@ -126,51 +131,39 @@ export default function Register() {
             <div className="w-10" />
           </div>
 
-          {/* Dropdown menu */}
           {menuOpen && (
             <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-md z-50">
               <nav className="flex flex-col px-4 py-2">
-                <Link
-                  to="/"
-                  onClick={() => setMenuOpen(false)}
-                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMenuOpen(false)}
-                  className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 transition-colors"
-                >
-                  Sign up
-                </Link>
+                <Link to="/" onClick={() => setMenuOpen(false)} className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors">Home</Link>
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 border-b border-gray-100 transition-colors">Log in</Link>
+                <Link to="/register" onClick={() => setMenuOpen(false)} className="py-3 text-sm font-medium text-gray-700 hover:text-green-600 transition-colors">Sign up</Link>
               </nav>
             </div>
           )}
         </div>
 
-        {/* Card */}
         <div className="flex-1 flex flex-col justify-center px-5 py-6">
           <div className="bg-[#122d47] rounded-2xl px-6 py-8 flex flex-col gap-5">
 
-            {/* Title */}
             <div className="text-center">
-              <h1 className="text-xl font-bold text-white leading-snug">
-                Create your NamePage Account
-              </h1>
+              <h1 className="text-xl font-bold text-white leading-snug">Create your Account</h1>
               <p className="text-green-400 text-sm mt-1">Join us for a better future</p>
             </div>
 
-            {/* Inputs white card */}
             <div className="bg-white rounded-2xl px-5 py-4 flex flex-col gap-4">
-              {/* Email field */}
+              {/* Username */}
+              <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
+                <UserIcon />
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
+                />
+              </div>
+
+              {/* Email */}
               <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
                 <MailIcon />
                 <input
@@ -182,7 +175,7 @@ export default function Register() {
                 />
               </div>
 
-              {/* Password field */}
+              {/* Password */}
               <div className="flex items-center border-b border-gray-200 pb-2.5 gap-3">
                 <LockIcon />
                 <input
@@ -192,17 +185,12 @@ export default function Register() {
                   onChange={e => setPassword(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(v => !v)}
-                  className="text-gray-400 flex-shrink-0"
-                  aria-label="Toggle password visibility"
-                >
+                <button type="button" onClick={() => setShowPassword(v => !v)} className="text-gray-400 flex-shrink-0">
                   {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
 
-              {/* Repeat password field */}
+              {/* Confirm Password */}
               <div className="flex items-center gap-3">
                 <LockIcon />
                 <input
@@ -212,80 +200,62 @@ export default function Register() {
                   onChange={e => setConfirmPassword(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm(v => !v)}
-                  className="text-gray-400 flex-shrink-0"
-                  aria-label="Toggle confirm password visibility"
-                >
+                <button type="button" onClick={() => setShowConfirm(v => !v)} className="text-gray-400 flex-shrink-0">
                   {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
             </div>
 
-            {/* Error message */}
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-            {/* Sign Up button */}
-            <button
-              type="button"
-              onClick={handleRegister}
-              disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors disabled:opacity-60"
-            >
+            <button type="button" onClick={handleRegister} disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold rounded-full py-3 text-sm transition-colors disabled:opacity-60">
               {loading ? 'Creating account...' : 'Sign Up'}
             </button>
 
-            {/* Terms */}
             <p className="text-center text-xs text-gray-400">
-              By signing up, you agree to our{' '}
-              <span className="text-green-400">Terms of Services</span>
-              {' '}and{' '}
-              <span className="text-green-400">Privacy Policy</span>
+              By signing up, you agree to our <span className="text-green-400">Terms</span> and <span className="text-green-400">Privacy Policy</span>
             </p>
 
-            {/* Already have an account */}
             <p className="text-center text-sm text-gray-400">
               Already have an account?{' '}
-              <Link to="/login" className="text-green-400 font-medium hover:underline">
-                Log in
-              </Link>
+              <Link to="/login" className="text-green-400 font-medium hover:underline">Log in</Link>
             </p>
-
-            {/* Footer inside card */}
-            <div className="flex items-center justify-center gap-4 pt-2 text-xs text-gray-500">
-              <a href="#" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
-              <span>|</span>
-              <a href="#" className="hover:text-gray-300 transition-colors">Terms of Service</a>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* ── DESKTOP LAYOUT (hidden on mobile, shown on md and above) ── */}
+      {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden md:flex min-h-screen w-full font-sans">
 
-        {/* Left — landscape photo */}
-        <div
-          className="md:w-3/5 bg-cover bg-center"
-          style={{ backgroundImage: "url('PaisajeGranCanaria.jpg')" }}
-        />
+        <div className="md:w-3/5 bg-cover bg-center" style={{ backgroundImage: "url('PaisajeGranCanaria.jpg')" }} />
 
-        {/* Right — form panel */}
         <div className="md:w-2/5 flex flex-col justify-between bg-white px-10 py-8 overflow-y-auto">
 
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-1.5 w-fit hover:opacity-80 transition-opacity">
             <span className="text-xl">🌍</span>
             <span className="font-semibold text-gray-800 text-base tracking-wide">Raíces</span>
             <span className="text-lg">🌿</span>
           </Link>
 
-          {/* Form content */}
           <div className="flex flex-col gap-5 w-full max-w-xs mx-auto">
             <h1 className="text-2xl font-normal text-gray-800 leading-snug">
               Welcome to <span className="font-bold text-green-700">our</span> Page
             </h1>
+
+            {/* Username */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-500">Username</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Choose a username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />
+              </div>
+            </div>
 
             {/* Email */}
             <div className="flex flex-col gap-1">
@@ -310,12 +280,8 @@ export default function Register() {
                   onChange={e => setPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  aria-label="Toggle password visibility"
-                >
+                <button type="button" onClick={() => setShowPassword(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
@@ -327,45 +293,31 @@ export default function Register() {
               <div className="relative">
                 <input
                   type={showConfirm ? 'text' : 'password'}
-                  placeholder="Enter password"
+                  placeholder="Repeat password"
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  aria-label="Toggle confirm password visibility"
-                >
+                <button type="button" onClick={() => setShowConfirm(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
             </div>
 
-            {/* Error message */}
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-            {/* Create Account Button */}
-            <button
-              type="button"
-              onClick={handleRegister}
-              disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors mt-1 disabled:opacity-60"
-            >
+            <button type="button" onClick={handleRegister} disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg py-3 text-sm transition-colors disabled:opacity-60">
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
 
-            {/* Sign in link */}
             <p className="text-center text-sm text-gray-400">
-              have an account?{' '}
-              <Link to="/login" className="text-green-600 hover:underline font-medium">
-                Sign in now
-              </Link>
+              Have an account?{' '}
+              <Link to="/login" className="text-green-600 hover:underline font-medium">Sign in now</Link>
             </p>
           </div>
 
-          {/* Footer */}
           <p className="text-center text-xs text-gray-400">© Raíces 2026</p>
         </div>
       </div>
