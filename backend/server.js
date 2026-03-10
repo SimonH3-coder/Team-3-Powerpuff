@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
+import authRoutes from './routes/auth.js';
 import profilesRoutes from './routes/profiles.js';
 import forumRoutes from './routes/forum.js';
 import repliesRoutes from './routes/replies.js';
@@ -15,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRoutes);
 app.use('/api/forum', forumRoutes);
 app.use('/api/replies', repliesRoutes);
 app.use('/api/news', newsRoutes);

@@ -8,12 +8,13 @@ export default function CreatePost({ postId, onFinish }) {
   const fileRef = useRef(null);
 
   useEffect(() => {
-  fetch("http://localhost:3000/api/auth/me")
-    .then(res => res.json())
-    .then(data => {
-      if (data.authenticated) setUserId(data.id);
-    });
-}, []);
+    // Get the user from localStorage (saved when logging in)
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      setUserId(user.id);
+    }
+  }, []);
 
   const handleFile = (file) => {
     if (!file?.type.startsWith("image/")) return;
