@@ -8,7 +8,7 @@ export default function CreatePost({ postId, onFinish }) {
   const fileRef = useRef(null);
 
   useEffect(() => {
-  fetch("http://localhost:3000/api/auth/me")
+  fetch("/api/forum")
     .then(res => res.json())
     .then(data => {
       if (data.authenticated) setUserId(data.id);
