@@ -6,17 +6,12 @@ const GUIDE_ITEMS = [
     id: 1,
     color: "#0e6b99",
     bg: "#dff1fb",
-    title: "Explore the territory",
-    desc: "Click on an island, zone or marker to see detailed information about that area.",
+    title: "Moverse por el mapa",
+    desc: "Usa la rueda del ratón para hacer zoom y arrastra para moverte.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
-        <path
-          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.75" />
+        <path d="m21 21-4.35-4.35M11 8v6m-3-3h6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -24,70 +19,23 @@ const GUIDE_ITEMS = [
     id: 2,
     color: "#1e7e5e",
     bg: "#dcf4ec",
-    title: "Zoom and navigation",
-    desc: "Use the zoom controls or scroll wheel to get closer and explore every corner.",
+    title: "Cambiar la capa del mapa",
+    desc: "Arriba a la derecha puedes cambiar entre mapa normal, satélite, terreno y lluvia.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
-        <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.75" />
-        <path
-          d="m21 21-4.35-4.35M11 8v6m-3-3h6"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-        />
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
   {
     id: 3,
-    color: "#b55d0d",
-    bg: "#fdeedd",
-    title: "Points of interest",
-    desc: "Discover natural spaces, protected areas and highlights across the islands.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
-        <path
-          d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"
-          stroke="currentColor"
-          strokeWidth="1.75"
-        />
-        <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.75" />
-      </svg>
-    ),
-  },
-  {
-    id: 4,
-    color: "#3757a0",
-    bg: "#e5ecf8",
-    title: "Map layers",
-    desc: "Switch between the available layers to customize how the territory is displayed.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
-        <path
-          d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: 5,
     color: "#7635b0",
     bg: "#f1e8fc",
-    title: "Forum and community",
-    desc: "Join the forum using a map location and share your experiences with others.",
+    title: "Publicar en el foro (próximamente)",
+    desc: "Haz clic en cualquier zona y podrás crear un post en el foro sobre ese lugar.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="guide-item__icon-svg" aria-hidden="true">
-        <path
-          d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },
@@ -203,7 +151,7 @@ export default function MapGuide({ isOpen, onClose }) {
         {/* Footer */}
         <div className="guide-panel__footer">
           <p className="guide-panel__footer-note">
-            🌋 Freely explore the islands' territory
+            🌋 ¡Explora las Islas Canarias!
           </p>
         </div>
       </aside>
