@@ -2,7 +2,7 @@
 
 export default function ForumPost({ post }) {
   const {
-    authorAvatar = "/images/circle.png",
+    authorAvatar = "#",
     authorName = "anonymous",
     content = "",
     imageUrl = "",

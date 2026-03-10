@@ -3,17 +3,21 @@ import { supabase } from '../supabase-client.js';
 
 const router = express.Router();
 
-// Register a new user
+// Register
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+  if (!email || !password || !username) {
+    return res.status(400).json({ error: 'Email, password and username are required' });
   }
 
   const { data, error } = await supabase.auth.signUp({ email, password });
-
   if (error) return res.status(400).json({ error: error.message });
+
+  await supabase.from('profiles').insert([{
+    id: data.user.id,
+    username: username,
+  }]);
 
   res.json({ message: 'Account created! Check your email to confirm.', user: data.user });
 });
