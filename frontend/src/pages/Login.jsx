@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -49,6 +49,36 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong');
+      } else {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/');
+      }
+    } catch (err) {
+      setError('Could not connect to the server');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -136,6 +166,8 @@ export default function Login() {
                 <input
                   type="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
               </div>
@@ -146,6 +178,8 @@ export default function Login() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="bg-transparent text-gray-700 placeholder-gray-400 text-sm outline-none w-full"
                 />
                 <button
@@ -159,6 +193,9 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Error message */}
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
             {/* Forgot password */}
             <div className="flex justify-center -mt-2">
               <Link to="/forgot-password" className="text-sm text-gray-300 hover:underline">
@@ -169,9 +206,11 @@ export default function Login() {
             {/* Log in button */}
             <button
               type="button"
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors"
+              onClick={handleLogin}
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-full py-3 text-sm transition-colors disabled:opacity-60"
             >
-              Log In
+              {loading ? 'Logging in...' : 'Log In'}
             </button>
 
             {/* Sign up link */}
@@ -224,10 +263,12 @@ export default function Login() {
 
             {/* Login */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500">Login</label>
+              <label className="text-xs text-gray-500">Email</label>
               <input
-                type="text"
-                placeholder="Email or phone number"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 className="border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
@@ -239,6 +280,8 @@ export default function Login() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="w-full border border-gray-200 bg-gray-100 rounded-lg px-4 py-3 pr-10 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
                 <button
@@ -251,6 +294,9 @@ export default function Login() {
                 </button>
               </div>
             </div>
+
+            {/* Error message */}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
             {/* Remember me + Forgot password */}
             <div className="flex items-center justify-between">
@@ -273,9 +319,11 @@ export default function Login() {
             {/* Sign in Button */}
             <button
               type="button"
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors"
+              onClick={handleLogin}
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold rounded-lg py-3 text-sm transition-colors disabled:opacity-60"
             >
-              Sign in
+              {loading ? 'Logging in...' : 'Sign in'}
             </button>
 
             {/* Sign up link */}

@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import Map from './pages/Map'
 import Profile from './pages/Profile'
+import Forum from './pages/Forum'
+import News from './pages/News'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path='/map' element={<Map />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/forum" element={<Forum />} />
+        <Route path="/news" element={<News />} />
       </Routes>
     </BrowserRouter>
   )
