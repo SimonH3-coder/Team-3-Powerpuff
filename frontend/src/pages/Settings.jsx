@@ -25,13 +25,18 @@ function AccountModal({ onClose, email, userId }) {
   async function handleChangePassword(e) {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    const res = await fetch("/api/auth/change-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }),
-    });
-    setMsg(res.ok ? "Password updated!" : "Something went wrong.");
-    setCurrentPw(""); setNewPw("");
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }),
+      });
+      const data = await res.json();
+      setMsg(res.ok ? "Password updated!" : (data.error || "Something went wrong."));
+      if (res.ok) { setCurrentPw(""); setNewPw(""); }
+    } catch {
+      setMsg("Could not connect to the server.");
+    }
   }
 
   async function handleDeleteAccount() {
