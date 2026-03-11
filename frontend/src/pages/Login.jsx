@@ -32,7 +32,7 @@ export default function Login() {
       } else {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/');
+        navigate('/profile');
       }
     } catch (err) {
       setError('Could not connect to the server');
