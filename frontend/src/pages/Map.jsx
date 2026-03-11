@@ -16,6 +16,32 @@ function LeafletMap() {
   const tileLayerRef = useRef(null);
   const [activeLayer, setActiveLayer] = useState("standard");
   const [clickedPlace, setClickedPlace] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [posting, setPosting] = useState(false);
+  const [postMsg, setPostMsg] = useState("");
+
+  async function handlePost() {
+    const token = localStorage.getItem("token");
+    if (!token) { setPostMsg("You must be logged in to post."); return; }
+    if (!title.trim()) { setPostMsg("Please enter a title."); return; }
+    setPosting(true);
+    setPostMsg("");
+    try {
+      const res = await fetch("http://localhost:3000/api/forum", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({ title, content: `📍 Location: ${clickedPlace.lat}, ${clickedPlace.lng}\n\n${content}` }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setPostMsg(data.error || "Something went wrong"); }
+      else { setPostMsg("Posted!"); setTimeout(() => { setClickedPlace(null); setShowForm(false); setTitle(""); setContent(""); setPostMsg(""); }, 1500); }
+    } catch (e) {
+      setPostMsg("Could not connect to server.");
+    }
+    setPosting(false);
+  }
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -52,10 +78,24 @@ function LeafletMap() {
         ))}
       </div>
       {clickedPlace && (
-        <div style={{ position: "absolute", bottom: "30px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, background: "white", borderRadius: "10px", padding: "12px 16px", boxShadow: "0 2px 10px rgba(0,0,0,0.25)", display: "flex", alignItems: "center", gap: "10px", fontSize: "13px", maxWidth: "320px" }}>
-          <span>📍 {clickedPlace.lat}, {clickedPlace.lng}</span>
-          <button disabled title="Coming Soon" style={{ padding: "5px 10px", borderRadius: "6px", border: "none", background: "#ddd", color: "#999", cursor: "not-allowed", fontSize: "12px", fontWeight: "bold", whiteSpace: "nowrap" }}>💬 Post to the forum (coming soon)</button>
-          <button onClick={() => setClickedPlace(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "16px", lineHeight: 1 }}>✕</button>
+        <div style={{ position: "absolute", bottom: "30px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, background: "white", borderRadius: "10px", padding: "12px 16px", boxShadow: "0 2px 10px rgba(0,0,0,0.25)", fontSize: "13px", minWidth: "300px", maxWidth: "340px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: showForm ? "10px" : "0" }}>
+            <span>📍 {clickedPlace.lat}, {clickedPlace.lng}</span>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <button onClick={() => setShowForm(v => !v)} style={{ padding: "5px 10px", borderRadius: "6px", border: "none", background: "#16a34a", color: "white", cursor: "pointer", fontSize: "12px", fontWeight: "bold", whiteSpace: "nowrap" }}>💬 Post to Forum</button>
+              <button onClick={() => { setClickedPlace(null); setShowForm(false); setTitle(""); setContent(""); setPostMsg(""); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "16px", lineHeight: 1 }}>✕</button>
+            </div>
+          </div>
+          {showForm && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Post title" style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ddd", fontSize: "13px", outline: "none" }} />
+              <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="What's happening here?" rows={3} style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ddd", fontSize: "13px", resize: "none", outline: "none" }} />
+              {postMsg && <p style={{ margin: 0, fontSize: "12px", color: postMsg === "Posted!" ? "green" : "red" }}>{postMsg}</p>}
+              <button onClick={handlePost} disabled={posting} style={{ padding: "8px", borderRadius: "6px", border: "none", background: posting ? "#aaa" : "#16a34a", color: "white", cursor: posting ? "not-allowed" : "pointer", fontWeight: "bold", fontSize: "13px" }}>
+                {posting ? "Posting..." : "Submit"}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
