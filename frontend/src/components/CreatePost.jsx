@@ -5,18 +5,46 @@ export default function CreatePost({ postId, onFinish }) {
   const [image, setImage] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [username, setUsername] = useState('');
+  const [scrollY, setScrollY] = useState(0);
   const fileRef = useRef(null);
 
+  const hasValidToken = (token) => {
+    if (!token || token === 'null' || token === 'undefined') return false;
+    return token.split('.').length === 3;
+  };
+
+//fetching username for the "Posting as @username" text
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) return;
+    if (!hasValidToken(token)) return;
 
     fetch('/api/profiles', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(res => res.json())
-      .then(data => setUsername(data.username));
+      .then(async (res) => {
+        if (res.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          throw new Error('Session expired. Please log in again.');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('Profile data:', data);
+        setUsername(data.username);
+      })
+      .catch((err) => {
+        console.error('Profile fetch failed:', err.message);
+      });
   }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY || 0);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // If postId is provided, fetch the existing post data to edit
 
   const handleFile = (file) => {
     if (!file?.type.startsWith("image/")) return;
@@ -29,27 +57,45 @@ export default function CreatePost({ postId, onFinish }) {
     if (!content.trim() && !image) return;
 
     const token = localStorage.getItem('token');
-    if (!token) { alert("Please log in first!"); return; }
+    if (!hasValidToken(token)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      alert("Your session is invalid or expired. Please log in again.");
+      return;
+    }
 
     try {
-      const formData = new FormData();
-      formData.append("content", content);
-      formData.append("title", "");
-      if (image && fileRef.current?.files[0]) {
-        formData.append("image", fileRef.current.files[0]);
-      }
-
       const response = await fetch("/api/forum", {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: formData,
+        body: JSON.stringify({ title: "", content }),
       });
 
-      const data = await response.json();
-      if (data.error) { alert("Error: " + data.error); return; }
+      console.log("Status:", response.status);
+      const text = await response.text();
+      console.log("Raw:", text);
 
+      let data = null;
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (_parseError) {
+          data = null;
+        }
+      }
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
+        const errorMessage = data?.error || `Request failed (${response.status})`;
+        alert("Error: " + errorMessage);
+        return;
+      }
       setContent("");
       setImage(null);
       if (onFinish) onFinish();
@@ -60,15 +106,23 @@ export default function CreatePost({ postId, onFinish }) {
   };
 
   const charLeft = 280 - content.length;
+  const scale = Math.max(0.9, 1 - scrollY * 0.00025);
 
+  //FRONTEND: CreatePost 
   return (
     <div className="mt-7.5 flex items-center justify-center font-monserrat">
-      <div className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-5 sm:p-8 relative overflow-hidden shadow-2x bg-gradient-green">
+      <div
+        className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-5 sm:p-8 relative overflow-hidden shadow-2x bg-gradient-green transition-transform duration-300"
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: "top center",
+          willChange: "transform",
+        }}
+      >
 
         <h2 className="text-lg sm:text-3xl font-extrabold text-white mb-4 sm:mb-5 tracking-tight font-['Poppins']">
           Post your eco thoughts!
         </h2>
-        {/* Posting as username */}
 
         {username && (
           <p className="text-white/70 text-sm font-semibold mb-2">

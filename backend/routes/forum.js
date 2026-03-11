@@ -8,7 +8,7 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/', async (_req, res) => {
-  const { data, error } = await supabase.from('forum').select('*');
+  const { data, error } = await supabase.from('forum').select('*, profiles(username, avatar_url)');
   if (error) return res.status(400).json({ error: error.message });
   res.json(data);
 });
@@ -16,7 +16,7 @@ router.get('/', async (_req, res) => {
 router.get('/user/:userId', checkAuth, async (req, res) => {
   const userId = req.params.userId;
 
-  const { data, error } = await supabase.from('forum').select('*').eq('poster_id', userId);
+  const { data, error } = await supabase.from('forum').select('*, profiles(username, avatar_url)').eq('poster_id', userId);
 
   if (error) return res.status(400).json({ error: error.message });
   res.json(data);

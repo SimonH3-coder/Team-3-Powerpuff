@@ -21,7 +21,7 @@ export default function SearchBarForum({ onSearch }) {
                     value={query}
                     onChange={(e) => {
                     setQuery(e.target.value);
-                    if (onSearch) onSearch(e.target.value); // 👈 just add this line
+                    if (onSearch) onSearch(e.target.value); 
                     }}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
                     placeholder="Find anything"

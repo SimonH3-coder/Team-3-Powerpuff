@@ -41,9 +41,9 @@ export default function WeatherBar() {
       </section>
     </div>
     <div>
-          <Link to="#" className="ml-3">
+          <Link to="/forum" className="ml-3">
             <button type="button" className="flex items-center font-bold justify-center mx-auto mt-8.75 w-58.5 h-13 px-4 py-2 rounded-[1.812rem] bg-accent-green text-white font-poppins text-sm">
-              Statistics
+              Forum
             </button>
           </Link>
     </div>
