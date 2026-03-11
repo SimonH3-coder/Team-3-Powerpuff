@@ -21,6 +21,8 @@ router.post('/register', async (req, res) => {
     },
   });
 
+  console.log('Supabase signup response:', { data, error });
+
   if (error) return res.status(400).json({ error: error.message });
 
   res.json({ message: 'Account created! Check your email to confirm.', user: data.user });
