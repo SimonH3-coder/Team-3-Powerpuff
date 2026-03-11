@@ -9,26 +9,8 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white uppercase mb-4">Follow Us</h3>
             <ul className="space-y-2">
               <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Github</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Instagram</a></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Canva</a></li>
               <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Figma</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">About</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Blog</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Careers</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Press</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase mb-4">Resources</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Documentation</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Help Center</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Community</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Tutorials</a></li>
             </ul>
           </div>
           <div>
