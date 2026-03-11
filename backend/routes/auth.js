@@ -15,9 +15,13 @@ router.post('/register', async (req, res) => {
     email,
     password,
     options: {
-      username: username,
+      data: {
+        username: username,
+      },
     },
   });
+
+  console.log('Supabase signup response:', { data, error });
 
   if (error) return res.status(400).json({ error: error.message });
 
