@@ -3,6 +3,7 @@ import SearchBarForum from "../components/SearchBarForum";
 import CreatePost from "../components/CreatePost";
 import ForumFeed from "../components/ForumFeed";
 import { useState, useCallback } from "react";
+import PostOfTheDay from "../components/PostOftheDay";
 
 export default function Forum() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,6 +17,7 @@ export default function Forum() {
     <div>
       <Header />
       <SearchBarForum onSearch={setSearchQuery} />
+      <PostOfTheDay />
       <CreatePost onFinish={handlePostFinish} />
       <ForumFeed key={refreshKey} searchQuery={searchQuery} />
     </div>
