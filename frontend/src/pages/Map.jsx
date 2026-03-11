@@ -3,7 +3,7 @@ import MapGuide from "../components/MapGuide";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const LAYERS = [
   { id: "standard", label: "Normal", url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 },
@@ -15,6 +15,7 @@ function LeafletMap() {
   const mapRef = useRef(null);
   const containerRef = useRef(null);
   const tileLayerRef = useRef(null);
+  const navigate = useNavigate();
   const [activeLayer, setActiveLayer] = useState("standard");
   const [clickedPlace, setClickedPlace] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +23,25 @@ function LeafletMap() {
   const [content, setContent] = useState("");
   const [posting, setPosting] = useState(false);
   const [postMsg, setPostMsg] = useState("");
+
+  function addPostMarker(map, lat, lng, postTitle, postId) {
+    const marker = L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map);
+    marker.bindPopup(`<b>${postTitle}</b><br><button id="goto-${postId}" style="color:#16a34a;font-weight:bold;background:none;border:none;cursor:pointer;padding:4px 0">View in Forum →</button>`);
+    marker.on("popupopen", () => setTimeout(() => {
+      document.getElementById(`goto-${postId}`)?.addEventListener("click", () => navigate("/forum"));
+    }, 0));
+  }
+
+  async function loadForumMarkers(map) {
+    try {
+      const res = await fetch("http://localhost:3000/api/forum");
+      const posts = await res.json();
+      posts.forEach(post => {
+        const m = post.content?.match(/📍 Location: (-?\d+\.\d+), (-?\d+\.\d+)/);
+        if (m) addPostMarker(map, m[1], m[2], post.title || "Forum post", post.id);
+      });
+    } catch (e) {}
+  }
 
   async function handlePost() {
     const token = localStorage.getItem("token");
@@ -37,7 +57,11 @@ function LeafletMap() {
       });
       const data = await res.json();
       if (!res.ok) { setPostMsg(data.error || "Something went wrong"); }
-      else { setPostMsg("Posted!"); setTimeout(() => { setClickedPlace(null); setShowForm(false); setTitle(""); setContent(""); setPostMsg(""); }, 1500); }
+      else {
+        setPostMsg("Posted!");
+        if (data && data[0]?.id) addPostMarker(mapRef.current, clickedPlace.lat, clickedPlace.lng, title, data[0].id);
+        setTimeout(() => { setClickedPlace(null); setShowForm(false); setTitle(""); setContent(""); setPostMsg(""); }, 1500);
+      }
     } catch (e) {
       setPostMsg("Could not connect to server.");
     }
@@ -60,6 +84,7 @@ function LeafletMap() {
       setClickedPlace({ lat: lat.toFixed(4), lng: lng.toFixed(4) });
     });
     mapRef.current = map;
+    loadForumMarkers(map);
     const ro = new ResizeObserver(() => map.invalidateSize({ pan: false }));
     ro.observe(containerRef.current);
     return () => { ro.disconnect(); map.remove(); mapRef.current = null; };
