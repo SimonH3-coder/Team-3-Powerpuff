@@ -51,11 +51,11 @@ router.put('/:id/avatar', checkAuth, upload.single('image'), async (req, res) =>
       console.log('No file received in request');
     }
 
-    const { data, error } = await supabase.from('profiles').update({ avatar_url }).eq('id', userId).single();
+    const { data, error } = await supabase.from('profiles').update({ avatar_url }).eq('id', userId).select().single();
 
     if (error) return res.status(400).json({ error: error.message });
 
-    res.json(data);
+    res.json(data || { avatar_url });
   } catch (err) {
     console.error('Avatar upload error:', err);
     res.status(500).json({ error: err.message });

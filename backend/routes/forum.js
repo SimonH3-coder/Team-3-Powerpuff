@@ -27,6 +27,8 @@ router.get('/user/:userId', checkAuth, async (req, res) => {
 
 router.post('/', checkAuth, upload.single('image'), async (req, res) => {
   try {
+    console.log('Body:', req.body);     
+    console.log('File:', req.file);  
     const { title, content } = req.body;
     const poster_id = req.user.id;
     const token = req.headers.authorization.replace('Bearer ', '');

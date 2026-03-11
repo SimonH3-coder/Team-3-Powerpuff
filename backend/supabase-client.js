@@ -10,6 +10,7 @@ const anonKey = process.env.SUPABASE_ANON_KEY || key;
 export const supabase = createClient(url, key);
 
 export const createUserClient = (token) => {
+	console.log('Token:', token);
 	return createClient(url, anonKey, {
 		global: {
 			headers: {
