@@ -1,26 +1,27 @@
 
-
 export default function ForumPost({ post }) {
   const {
-    authorAvatar = "#",
-    authorName = "anonymous",
     content = "",
-    imageUrl = "",
+    image_url: imageUrl = "",
     likes = 0,
     reposts = 0,
+    profiles,
   } = post;
 
+  const username = profiles?.username ?? "anonymous";
+  const avatar = profiles?.avatar_url ?? null;
+  
   return (
     <div className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-6 bg-[#1a3a5c] shadow-xl font-['Poppins']">
       
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <img
-          src={authorAvatar}
+          src={avatar || "https://placehold.co/40x40?text=%40"}
           alt="avatar"
           className="w-10 h-10 rounded-full object-cover"
         />
-        <span className="text-white font-semibold text-sm">@{authorName}</span>
+        <span className="text-white font-semibold text-sm">@{username}</span>
       </div>
 
       {/* Content */}
