@@ -43,4 +43,22 @@ router.post('/login', async (req, res) => {
   res.json({ token: data.session.access_token, user: data.user });
 });
 
+// Change password
+router.post('/change-password', async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  if (userError || !user) return res.status(401).json({ error: 'Unauthorized' });
+
+  const { error: signInError } = await supabase.auth.signInWithPassword({ email: user.email, password: currentPassword });
+  if (signInError) return res.status(400).json({ error: 'Current password is incorrect' });
+
+  const { error } = await supabase.auth.admin.updateUserById(user.id, { password: newPassword });
+  if (error) return res.status(400).json({ error: error.message });
+
+  res.json({ message: 'Password updated' });
+});
+
 export default router;
