@@ -10,10 +10,14 @@ export default function CreatePost({ postId, onFinish }) {
 
   const hasValidToken = (token) => {
     if (!token || token === 'null' || token === 'undefined') return false;
-    return token.split('.').length === 3;
+    if (token.split('.').length !== 3) return false;
+    for (let i = 0; i < token.length; i++) {
+      if (token.charCodeAt(i) > 127) return false;
+    }
+    return true;
   };
 
-  //fetching username for the "Posting as @username" text
+  //fetching username for the 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!hasValidToken(token)) return;
@@ -109,6 +113,11 @@ export default function CreatePost({ postId, onFinish }) {
       if (onFinish) onFinish();
     } catch (err) {
       console.error('Failed to post:', err);
+      if (err instanceof TypeError && err.message.includes('ByteString')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        alert('Your session token is corrupted. Please log in again.');
+      }
     }
   };
 
