@@ -1,7 +1,7 @@
 import express from 'express';
 import { checkAuth } from '../middleware/checkAuth.js';
 import { checkAdmin } from '../middleware/checkAdmin.js';
-import { supabase, createUserClient } from '../supabase-client.js';
+import { supabase } from '../supabase-client.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -54,33 +54,7 @@ router.post('/', checkAuth, upload.single('image'), async (req, res) => {
   }
 });
 
-router.put('/:id', checkAuth, async (req, res) => {
-  const { content } = req.body;
-  const { data, error } = await supabase
-    .from('forum')
-    .update({ content, modified_at: new Date() })
-    .eq('id', req.params.id);
-
-  if (error) return res.status(400).json({ error: error.message });
-
-  res.json(data);
-});
-
-router.delete('/:id', checkAuth, async (req, res) => {
-  const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
-
-  if (error) return res.status(400).json({ error: error.message });
-
-  res.json({ message: 'Topic deleted' });
-});
-//admin route for deleting mean posts :<
-router.delete('/admin/:id', checkAdmin, async (req, res) => {
-  const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
-  if (error) return res.status(400).json({ error: error.message });
-  res.json({ message: 'Topic deleted' });
-});
-
-//Section for like/reblog routes
+//Section for like/reblog routes - MUST come BEFORE generic /:id routes
 
 router.post('/:id/like', checkAuth, async (req, res) => {
   try {
@@ -142,6 +116,34 @@ router.post('/:id/retweet', checkAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Generic /:id routes AFTER specific ones
+
+router.put('/:id', checkAuth, async (req, res) => {
+  const { content } = req.body;
+  const { data, error } = await supabase
+    .from('forum')
+    .update({ content, modified_at: new Date() })
+    .eq('id', req.params.id);
+
+  if (error) return res.status(400).json({ error: error.message });
+
+  res.json(data);
+});
+
+router.delete('/:id', checkAuth, async (req, res) => {
+  const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
+
+  if (error) return res.status(400).json({ error: error.message });
+
+  res.json({ message: 'Topic deleted' });
+});
+//admin route for deleting mean posts :<
+router.delete('/admin/:id', checkAdmin, async (req, res) => {
+  const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ message: 'Topic deleted' });
 });
 
 export default router;
