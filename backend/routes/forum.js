@@ -1,7 +1,7 @@
 import express from 'express';
 import { checkAuth } from '../middleware/checkAuth.js';
 import { checkAdmin } from '../middleware/checkAdmin.js';
-import { supabase } from '../supabase-client.js';
+import { supabase, createUserClient } from '../supabase-client.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -16,7 +16,10 @@ router.get('/', async (_req, res) => {
 router.get('/user/:userId', checkAuth, async (req, res) => {
   const userId = req.params.userId;
 
-  const { data, error } = await supabase.from('forum').select('*, profiles(username, avatar_url)').eq('poster_id', userId);
+  const { data, error } = await supabase
+    .from('forum')
+    .select('*, profiles(username, avatar_url)')
+    .eq('poster_id', userId);
 
   if (error) return res.status(400).json({ error: error.message });
   res.json(data);
