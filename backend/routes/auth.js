@@ -11,13 +11,15 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Email, password and username are required' });
   }
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) return res.status(400).json({ error: error.message });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      username: username,
+    },
+  });
 
-  await supabase.from('profiles').insert([{
-    id: data.user.id,
-    username: username,
-  }]);
+  if (error) return res.status(400).json({ error: error.message });
 
   res.json({ message: 'Account created! Check your email to confirm.', user: data.user });
 });
