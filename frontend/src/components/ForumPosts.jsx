@@ -1,4 +1,6 @@
 
+import { useNavigate } from "react-router-dom";
+
 export default function ForumPost({ post }) {
   const {
     content = "",
@@ -10,7 +12,11 @@ export default function ForumPost({ post }) {
 
   const username = profiles?.username ?? "anonymous";
   const avatar = profiles?.avatar_url ?? null;
-  
+  const navigate = useNavigate();
+
+  const coordMatch = content.match(/📍 Location: (-?\d+\.\d+), (-?\d+\.\d+)/);
+  const displayContent = coordMatch ? content.replace(/📍 Location: -?\d+\.\d+, -?\d+\.\d+\n\n?/, "") : content;
+
   return (
     <div className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-6 bg-[#1a3a5c] shadow-xl font-['Poppins']">
       
@@ -24,9 +30,19 @@ export default function ForumPost({ post }) {
         <span className="text-white font-semibold text-sm">@{username}</span>
       </div>
 
+      {/* Coordinates link */}
+      {coordMatch && (
+        <button
+          onClick={() => navigate(`/map?lat=${coordMatch[1]}&lng=${coordMatch[2]}`)}
+          className="flex items-center gap-1 text-[#4ade80] text-xs font-semibold mb-3 hover:underline"
+        >
+          📍 {coordMatch[1]}, {coordMatch[2]} — View on map
+        </button>
+      )}
+
       {/* Content */}
       <p className="text-white text-lg font-medium text-center mb-4 leading-snug">
-        {content}
+        {displayContent}
       </p>
 
       {/* Image */}

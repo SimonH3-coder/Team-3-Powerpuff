@@ -3,6 +3,7 @@ import MapGuide from "../components/MapGuide";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const LAYERS = [
   { id: "standard", label: "Normal", url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 },
@@ -43,9 +44,15 @@ function LeafletMap() {
     setPosting(false);
   }
 
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
-    const map = L.map(containerRef.current, { center: [28.2916, -15.9665], zoom: 8, zoomControl: true, attributionControl: true });
+    const lat = parseFloat(searchParams.get("lat")) || 28.2916;
+    const lng = parseFloat(searchParams.get("lng")) || -15.9665;
+    const zoom = searchParams.get("lat") ? 14 : 8;
+    const map = L.map(containerRef.current, { center: [lat, lng], zoom, zoomControl: true, attributionControl: true });
+    if (searchParams.get("lat")) L.marker([lat, lng]).addTo(map).bindPopup("📍 From forum post").openPopup();
     const defaultLayer = LAYERS.find((l) => l.id === "standard");
     tileLayerRef.current = L.tileLayer(defaultLayer.url, { attribution: defaultLayer.attribution, maxZoom: defaultLayer.maxZoom }).addTo(map);
     map.on("click", (e) => {
