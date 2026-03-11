@@ -4,23 +4,13 @@ export default function Footer() {
   return (
     <footer className="bg-navy pt-16 pb-8">
       <Container>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase mb-4">Follow Us</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Github</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Canva</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Figma</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Terms of Service</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Cookie Policy</a></li>
-            </ul>
-          </div>
+        <div>
+          <h3 className="text-sm font-semibold text-white uppercase mb-4">Follow Us</h3>
+          <ul className="flex gap-6">
+            <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Github</a></li>
+            <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Canva</a></li>
+            <li><a href="#" className="text-sm text-slate-400 hover:text-sky">Figma</a></li>
+          </ul>
         </div>
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-slate-400">© 2026 Raíces. All rights reserved.</p>

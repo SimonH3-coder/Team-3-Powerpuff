@@ -16,43 +16,78 @@ function SettingsRow({ label, onClick }) {
   );
 }
 
-function Toggle({ value, onChange }) {
-  return (
-    <button onClick={() => onChange(!value)} className={`w-10 h-5 rounded-full transition-colors duration-200 flex items-center px-0.5 ${value ? "bg-accent-green" : "bg-white/30"}`}>
-      <span className={`w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${value ? "translate-x-5" : "translate-x-0"}`} />
-    </button>
-  );
-}
+function AccountModal({ onClose, email, userId }) {
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [msg, setMsg] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
-function NotificationsPanel() {
-  const [emailNotifs, setEmailNotifs] = useState(true);
-  const [forumReplies, setForumReplies] = useState(true);
-  const [newPosts, setNewPosts] = useState(false);
+  async function handleChangePassword(e) {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const res = await fetch("/api/auth/change-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }),
+    });
+    setMsg(res.ok ? "Password updated!" : "Something went wrong.");
+    setCurrentPw(""); setNewPw("");
+  }
+
+  async function handleDeleteAccount() {
+    const token = localStorage.getItem("token");
+    await fetch(`/api/profiles/${userId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ userId }),
+    });
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  }
+
   return (
-    <div className="px-6 pb-4 flex flex-col gap-3">
-      <div className="flex items-center justify-between"><span className="text-white/80 text-sm font-poppins">Email notifications</span><Toggle value={emailNotifs} onChange={setEmailNotifs} /></div>
-      <div className="flex items-center justify-between"><span className="text-white/80 text-sm font-poppins">Forum replies</span><Toggle value={forumReplies} onChange={setForumReplies} /></div>
-      <div className="flex items-center justify-between"><span className="text-white/80 text-sm font-poppins">New posts nearby</span><Toggle value={newPosts} onChange={setNewPosts} /></div>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+      <div className="bg-navy rounded-2xl w-full max-w-sm p-6 flex flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-white font-semibold font-poppins">Account Details</h2>
+          <button onClick={onClose} className="text-white/50 hover:text-white text-2xl leading-none">×</button>
+        </div>
+        <p className="text-white/60 text-xs font-poppins">{email}</p>
+        <form onSubmit={handleChangePassword} className="flex flex-col gap-3">
+          <p className="text-white/80 text-sm font-poppins font-medium">Change Password</p>
+          <input type="password" placeholder="Current password" value={currentPw} onChange={e => setCurrentPw(e.target.value)} className="bg-white/10 text-white text-sm font-poppins rounded-lg px-4 py-2 outline-none placeholder:text-white/40" />
+          <input type="password" placeholder="New password" value={newPw} onChange={e => setNewPw(e.target.value)} className="bg-white/10 text-white text-sm font-poppins rounded-lg px-4 py-2 outline-none placeholder:text-white/40" />
+          <button type="submit" className="bg-accent-green text-navy text-sm font-semibold font-poppins rounded-lg py-2">Save</button>
+          {msg && <p className="text-xs text-white/60 font-poppins">{msg}</p>}
+        </form>
+        <div className="border-t border-white/10 pt-4">
+          {!confirmDelete ? (
+            <button onClick={() => setConfirmDelete(true)} className="text-red-400 text-sm font-poppins hover:text-red-300">Delete Account</button>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <p className="text-white/70 text-xs font-poppins">Are you sure? This cannot be undone.</p>
+              <div className="flex gap-3">
+                <button onClick={handleDeleteAccount} className="bg-red-500 text-white text-sm font-poppins rounded-lg px-4 py-1.5">Yes, delete</button>
+                <button onClick={() => setConfirmDelete(false)} className="text-white/50 text-sm font-poppins hover:text-white">Cancel</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-function SettingsCard({ navigate, onLogout, username, email }) {
-  const [notifsOpen, setNotifsOpen] = useState(false);
+function SettingsCard({ navigate, onLogout, username, email, onAccountDetails }) {
   return (
     <div className="bg-navy rounded-2xl overflow-hidden w-full">
       <div className="px-6 py-4 text-center border-b border-white/10">
         <p className="text-white font-semibold text-sm font-poppins">{username || "User"}</p>
         <p className="text-white/70 text-xs font-poppins mt-0.5">{email}</p>
       </div>
-      <SettingsRow label="Account Details" onClick={() => navigate("/profile")} />
-      <SettingsRow label="Saved Locations" onClick={() => navigate("/map")} />
+      <SettingsRow label="Account Details" onClick={onAccountDetails} />
       <SettingsRow label="Post in the Forum" onClick={() => navigate("/forum")} />
-      <div onClick={() => setNotifsOpen(v => !v)} className="flex items-center justify-between py-4 px-6 border-b border-white/10 cursor-pointer hover:bg-white/5 transition-colors">
-        <span className="text-white text-sm font-medium font-poppins">Notifications</span>
-        <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5 text-accent-green transition-transform duration-200 ${notifsOpen ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-      </div>
-      {notifsOpen && <NotificationsPanel />}
       <div onClick={onLogout} className="flex items-center justify-center gap-2 py-4 cursor-pointer hover:bg-white/5 transition-colors">
         <LogOutIcon />
         <span className="text-white text-sm font-poppins">Log Out</span>
@@ -99,6 +134,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -159,7 +195,7 @@ export default function Settings() {
             <p className="mt-4 text-sm font-poppins text-gray-700">{displayName}</p>
             <p className="text-sm font-poppins text-center text-gray-600 mt-1 whitespace-pre-line">{displayBio}</p>
             <SettingsTitle className="mt-8" />
-            <div className="mt-6 w-full"><SettingsCard navigate={navigate} onLogout={handleLogout} username={profile?.username} email={displayEmail} /></div>
+            <div className="mt-6 w-full"><SettingsCard navigate={navigate} onLogout={handleLogout} username={profile?.username} email={displayEmail} onAccountDetails={() => setShowAccountModal(true)} /></div>
           </div>
           <div className="hidden md:grid md:grid-cols-[auto_1fr] gap-12 py-20 px-8 max-w-3xl mx-auto items-start">
             <div className="flex flex-col items-center w-52">
@@ -169,10 +205,17 @@ export default function Settings() {
               <p className="text-sm font-poppins text-center text-gray-600 mt-1 whitespace-pre-line">{displayBio}</p>
               <SettingsTitle className="mt-8 text-center" />
             </div>
-            <SettingsCard navigate={navigate} onLogout={handleLogout} username={profile?.username} email={displayEmail} />
+            <SettingsCard navigate={navigate} onLogout={handleLogout} username={profile?.username} email={displayEmail} onAccountDetails={() => setShowAccountModal(true)} />
           </div>
         </Container>
       </div>
+      {showAccountModal && (
+        <AccountModal
+          onClose={() => setShowAccountModal(false)}
+          email={displayEmail}
+          userId={JSON.parse(localStorage.getItem("user") || "null")?.id}
+        />
+      )}
     </>
   );
 }
