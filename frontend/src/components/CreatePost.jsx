@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from 'react';
 
 export default function CreatePost({ postId, onFinish }) {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [dragOver, setDragOver] = useState(false);
   const [username, setUsername] = useState('');
@@ -13,13 +13,13 @@ export default function CreatePost({ postId, onFinish }) {
     return token.split('.').length === 3;
   };
 
-//fetching username for the "Posting as @username" text
+  //fetching username for the "Posting as @username" text
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!hasValidToken(token)) return;
 
     fetch('/api/profiles', {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
         if (res.status === 401) {
@@ -29,7 +29,7 @@ export default function CreatePost({ postId, onFinish }) {
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log('Profile data:', data);
         setUsername(data.username);
       })
@@ -40,14 +40,14 @@ export default function CreatePost({ postId, onFinish }) {
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY || 0);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // If postId is provided, fetch the existing post data to edit
 
   const handleFile = (file) => {
-    if (!file?.type.startsWith("image/")) return;
+    if (!file?.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = (e) => setImage(e.target.result);
     reader.readAsDataURL(file);
@@ -60,23 +60,31 @@ export default function CreatePost({ postId, onFinish }) {
     if (!hasValidToken(token)) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      alert("Your session is invalid or expired. Please log in again.");
+      alert('Your session is invalid or expired. Please log in again.');
       return;
     }
 
     try {
-      const response = await fetch("/api/forum", {
-        method: "POST",
+      const formData = new FormData();
+      formData.append('content', content);
+
+      if (image) {
+        const blob = await fetch(image).then((res) => res.blob());
+
+        formData.append('image', blob, 'image.jpg');
+      }
+
+      const response = await fetch('/api/forum', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: "", content }),
+        body: formData,
       });
 
-      console.log("Status:", response.status);
+      console.log('Status:', response.status);
       const text = await response.text();
-      console.log("Raw:", text);
+      console.log('Raw:', text);
 
       let data = null;
       if (text) {
@@ -93,33 +101,31 @@ export default function CreatePost({ postId, onFinish }) {
           localStorage.removeItem('user');
         }
         const errorMessage = data?.error || `Request failed (${response.status})`;
-        alert("Error: " + errorMessage);
+        alert('Error: ' + errorMessage);
         return;
       }
-      setContent("");
+      setContent('');
       setImage(null);
       if (onFinish) onFinish();
-
     } catch (err) {
-      console.error("Failed to post:", err);
+      console.error('Failed to post:', err);
     }
   };
 
   const charLeft = 280 - content.length;
   const scale = Math.max(0.9, 1 - scrollY * 0.00025);
 
-  //FRONTEND: CreatePost 
+  //FRONTEND: CreatePost
   return (
     <div className="mt-7.5 flex items-center justify-center font-monserrat">
       <div
         className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-5 sm:p-8 relative overflow-hidden shadow-2x bg-gradient-green transition-transform duration-300"
         style={{
           transform: `scale(${scale})`,
-          transformOrigin: "top center",
-          willChange: "transform",
+          transformOrigin: 'top center',
+          willChange: 'transform',
         }}
       >
-
         <h2 className="text-lg sm:text-3xl font-extrabold text-white mb-4 sm:mb-5 tracking-tight font-['Poppins']">
           Post your eco thoughts!
         </h2>
@@ -139,8 +145,8 @@ export default function CreatePost({ postId, onFinish }) {
           onChange={(e) => setContent(e.target.value)}
         />
 
-        <span className={`text-xs font-bold ${charLeft < 20 ? "text-red-400" : "text-white/50"}`}>
-          {charLeft < 60 ? charLeft : ""}
+        <span className={`text-xs font-bold ${charLeft < 20 ? 'text-red-400' : 'text-white/50'}`}>
+          {charLeft < 60 ? charLeft : ''}
         </span>
 
         {image ? (
@@ -156,11 +162,18 @@ export default function CreatePost({ postId, onFinish }) {
         ) : (
           <div
             onClick={() => fileRef.current?.click()}
-            onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); }}
-            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragOver(false);
+              handleFile(e.dataTransfer.files[0]);
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }}
             onDragLeave={() => setDragOver(false)}
             className={`mt-4 border-2 border-dashed rounded-2xl p-3 sm:p-5 text-center cursor-pointer transition-all duration-200
-              ${dragOver ? "border-white/80 bg-white/10" : "border-white/40 bg-white/5 hover:border-white/70 hover:bg-white/10"}`}
+              ${dragOver ? 'border-white/80 bg-white/10' : 'border-white/40 bg-white/5 hover:border-white/70 hover:bg-white/10'}`}
           >
             <span className="text-xl sm:text-2xl">🖼️</span>
             <p className="mt-1 text-white/70 text-xs sm:text-sm font-semibold">
@@ -182,7 +195,7 @@ export default function CreatePost({ postId, onFinish }) {
             disabled={!content.trim() && !image}
             className="bg-navy hover:bg-[#4b7697] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-lg hover:-translate-y-px transition-all duration-200"
           >
-            {postId ? "Save" : "Post"}
+            {postId ? 'Save' : 'Post'}
           </button>
         </div>
       </div>
