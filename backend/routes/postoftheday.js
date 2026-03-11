@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
   const { data: forumPost, error: forumError } = await supabase
     .from('forum')
-    .select('*')
+    .select('*, profiles(username, avatar_url), post_interactions(interaction_type)')
     .eq('id', data.forum_id)
     .single();
 
