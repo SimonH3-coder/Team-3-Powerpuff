@@ -8,7 +8,10 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/', async (_req, res) => {
-  const { data, error } = await supabase.from('forum').select('*, profiles(username, avatar_url)');
+  const { data, error } = await supabase
+    .from('forum')
+    .select('*, profiles(username, avatar_url)')
+    .order('id', { ascending: false });
   if (error) return res.status(400).json({ error: error.message });
   res.json(data);
 });
