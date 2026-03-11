@@ -16,9 +16,9 @@ export default function Features() {
           An application to track the electricity consumption and connect with like-minded people.
         </p>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mr-5 ml-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 lg:px-24">
   {/* Box 1 */}
-  <article className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+  <article className="h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
     <div className="mb-4">
       <img src={PinImage} alt="Climate Map icon" className="w-16 h-16" />
     </div>
@@ -27,25 +27,16 @@ export default function Features() {
   </article>
 
   {/* Box 2 */}
-  <article className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-    <div className="mb-4">
-      <img src={wildlifeProtectionImage} alt="Wildlife Protection icon" className="w-16 h-16" />
-    </div>
-    <h3 className="text-base font-semibold text-navy mb-1">Wildlife Protection</h3>
-    <p className="text-slate-500 text-sm leading-relaxed">Interactive maps showing biodiversity, green spaces, and air quality near you.</p>
-  </article>
-
-  {/* Box 3 */}
-  <article className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+  <article className="h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
     <div className="mb-4">
       <img src={electricityTrackerImage} alt="Electricity Tracker icon" className="w-16 h-16" />
     </div>
-    <h3 className="text-base font-semibold text-navy mb-1">Electricity Tracker</h3>
-    <p className="text-slate-500 text-sm leading-relaxed">Track your daily electricity consumption with our calculator, and protect the island's unique ecosystem.</p>
+    <h3 className="text-base font-semibold text-navy mb-1">Forum</h3>
+    <p className="text-slate-500 text-sm leading-relaxed">Join the conversation and share your thoughts on climate change and its impact on Gran Canaria.</p>
   </article>
 
-  {/* Box 4 */}
-  <article className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+  {/* Box 3 */}
+  <article className="h-full bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
     <div className="mb-4">
       <img src={islandStressLevelImage} alt="Island Stress Level icon" className="w-16 h-16" />
     </div>

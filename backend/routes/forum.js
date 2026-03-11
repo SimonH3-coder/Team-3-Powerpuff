@@ -1,7 +1,7 @@
 import express from 'express';
 import { checkAuth } from '../middleware/checkAuth.js';
 import { checkAdmin } from '../middleware/checkAdmin.js';
-import { supabase, createUserClient } from '../supabase-client.js';
+import { supabase } from '../supabase-client.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -34,8 +34,6 @@ router.post('/', checkAuth, upload.single('image'), async (req, res) => {
     console.log('File:', req.file);  
     const { title, content } = req.body;
     const poster_id = req.user.id;
-    const token = req.headers.authorization.replace('Bearer ', '');
-    const userSupabase = createUserClient(token);
     let image_url = null;
 
     if (req.file) {
@@ -50,7 +48,7 @@ router.post('/', checkAuth, upload.single('image'), async (req, res) => {
       image_url = publicUrl.publicUrl;
     }
 
-    const { data, error } = await userSupabase
+    const { data, error } = await supabase
       .from('forum')
       .insert([{ poster_id, title, content, image_url, created_at: new Date(), modified_at: new Date() }]);
 
