@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-git import ProfileImage from '../components/ProfileImage';
+import ProfileImage from '../components/ProfileImage';
 import WeatherBar from '../components/Weatherbar';
 import ForumPost from "../components/ForumPosts";
 

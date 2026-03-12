@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function NavbarDesktop() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileMenuRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token || token === "null" || token === "undefined") return;
+    const hasToken = Boolean(token && token !== "null" && token !== "undefined");
+
+    setIsAuthenticated(hasToken);
+
+    if (!hasToken) return;
 
     fetch("/api/profiles", {
       headers: { Authorization: `Bearer ${token}` },
@@ -18,14 +23,31 @@ export default function NavbarDesktop() {
         return res.json();
       })
       .then((data) => setUsername(data.username))
-      .catch(() => setUsername(null));
+      .catch(() => {
+        setUsername(null);
+        setIsAuthenticated(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
   }, []);
 
   return (
     <nav className="fill-[#FFFFFF] hidden md:flex justify-between items-center p-6 sticky top-0 z-50 bg-white">
       <Link to="/" className="flex flex-row justify-start items-start gap-2.5 absolute">
         <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_948_2414)">
+          <g clipPath="url(#clip0_948_2414)">
             <path d="M0 12.5C0 15.8152 1.42232 18.9946 3.95406 21.3388C6.4858 23.683 9.91958 25 13.5 25C17.0804 25 20.5142 23.683 23.0459 21.3388C25.5777 18.9946 27 15.8152 27 12.5C27 9.18479 25.5777 6.00537 23.0459 3.66117C20.5142 1.31696 17.0804 0 13.5 0C9.91958 0 6.4858 1.31696 3.95406 3.66117C1.42232 6.00537 0 9.18479 0 12.5Z" fill="#8DD9FF" />
             <path d="M0.0609131 13.6719C0.699315 20.0256 6.47114 25 13.5 25C20.5288 25 26.3006 20.0256 26.939 13.6719H0.0609131Z" fill="#3C9BD4" />
             <path opacity="0.35" d="M25.8158 17.6212C26.4229 16.3712 26.8024 15.0367 26.939 13.6719H0.0609131C0.159804 14.6573 0.385343 15.6283 0.732749 16.5643C5.52578 17.0549 18.1507 17.5284 25.8158 17.6212Z" fill="#9AF4EF" />
@@ -104,26 +126,7 @@ export default function NavbarDesktop() {
           </Link>
         </li>
         <li className="flex items-center gap-2">
-          {username ? (
-            <div className="relative">
-              <button
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                <span className="text-black font-poppins text-sm font-normal">@{username}</span>
-              </button>
-              {showProfileMenu && (
-                <div className="absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg py-2 z-50">
-                  <Link to="/profile" onClick={() => setShowProfileMenu(false)} className="block px-4 py-2 text-sm text-black hover:bg-gray-100">Profile</Link>
-                  <Link to="/settings" onClick={() => setShowProfileMenu(false)} className="block px-4 py-2 text-sm text-black hover:bg-gray-100">Settings</Link>
-                </div>
-              )}
-            </div>
-          ) : (
+          {!isAuthenticated && (
             <>
               <Link to="/login" className="text-black font-poppins text-sm font-normal flex items-center p-2">
                 Log in
@@ -133,6 +136,33 @@ export default function NavbarDesktop() {
               </Link>
             </>
           )}
+
+          <div className="relative" ref={profileMenuRef}>
+            <button
+              onClick={() => setShowProfileMenu((current) => !current)}
+              className="flex items-center gap-2 rounded-full border border-[#D9E7DD] px-3 py-2 text-black"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span className="text-sm font-normal font-poppins">{isAuthenticated ? username ? `@${username}` : "Account" : "Account"}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            {showProfileMenu && (
+              <div className="absolute right-0 mt-2 w-40 overflow-hidden rounded-lg bg-white py-2 shadow-lg z-50">
+                <Link to="/profile" onClick={() => setShowProfileMenu(false)} className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
+                  Profile
+                </Link>
+                <Link to="/settings" onClick={() => setShowProfileMenu(false)} className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
+                  Settings
+                </Link>
+              </div>
+            )}
+          </div>
         </li>
       </ul>
     </nav>
