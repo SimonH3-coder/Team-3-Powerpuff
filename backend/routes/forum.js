@@ -7,13 +7,40 @@ import multer from 'multer';
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
   const { data, error } = await supabase
     .from('forum')
     .select('*, profiles(username, avatar_url)')
     .order('id', { ascending: false });
   if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
+
+  // Count likes from post_interactions for all posts
+  const postIds = data.map(p => p.id);
+  const { data: allLikes } = await supabase
+    .from('post_interactions')
+    .select('post_id')
+    .in('post_id', postIds)
+    .eq('interaction_type', 'like');
+  const likeCounts = {};
+  (allLikes || []).forEach(i => { likeCounts[i.post_id] = (likeCounts[i.post_id] || 0) + 1; });
+
+  const userId = req.query.userId;
+  let likedSet = new Set();
+  if (userId) {
+    const { data: userLikes } = await supabase
+      .from('post_interactions')
+      .select('post_id')
+      .eq('user_id', userId)
+      .eq('interaction_type', 'like');
+    likedSet = new Set((userLikes || []).map(i => i.post_id));
+  }
+
+  const enriched = data.map(post => ({
+    ...post,
+    likes: likeCounts[post.id] || 0,
+    likedByUser: likedSet.has(post.id),
+  }));
+  res.json(enriched);
 });
 
 router.get('/user/:userId', checkAuth, async (req, res) => {
