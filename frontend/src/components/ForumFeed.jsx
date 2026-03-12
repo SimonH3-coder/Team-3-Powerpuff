@@ -3,12 +3,19 @@ import ForumPost from "./ForumPosts";
 
 export default function ForumFeed({ searchQuery = "" }) {
   const [posts, setPosts] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
-  useEffect(() => {
+  function loadPosts() {
     fetch("/api/forum")
       .then(res => res.json())
       .then(data => setPosts(data));
-  }, []);
+  }
+
+  useEffect(() => { loadPosts(); }, []);
+
+  function handleDelete(id) {
+    setPosts(prev => prev.filter(p => p.id !== id));
+  }
 
   const filtered = posts.filter(post =>
     post.content?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -22,7 +29,7 @@ export default function ForumFeed({ searchQuery = "" }) {
         <p className="text-gray-400 text-sm">No posts found for "{searchQuery}"</p>
       )}
       {filtered.map(post => (
-        <ForumPost key={post.id} post={post} />
+        <ForumPost key={post.id} post={post} currentUserId={currentUser?.id} onDelete={handleDelete} onRefresh={loadPosts} />
       ))}
     </div>
   );
