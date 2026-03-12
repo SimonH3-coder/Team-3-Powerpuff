@@ -48,8 +48,8 @@ export default function ForumPost({ post, currentUserId, onDelete, onRefresh }) 
   }
 
   return (
-    <div className="w-92.5 sm:w-full sm:max-w-xl rounded-3xl p-6 bg-[#1a3a5c] shadow-xl font-['Poppins']">
-
+    <div className="w-full max-w-xl rounded-3xl p-6 bg-[#1a3a5c] shadow-xl font-['Poppins']">
+      
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">

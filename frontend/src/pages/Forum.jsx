@@ -14,7 +14,7 @@ export default function Forum() {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Header />
       <SearchBarForum onSearch={setSearchQuery} />
       <PostOfTheDay />
