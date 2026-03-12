@@ -22,7 +22,7 @@ Users can sign up, share their environmental thoughts with images, pin their pos
 |-------|-----------|
 | Frontend | React + Vite |
 | Styling | Tailwind CSS |
-| Backend & Auth | Supabase | Node.js
+| Backend & Auth | Supabase | Node.js |
 | Image Storage | Supabase Storage |
 | Deployment | Vercel |
 
