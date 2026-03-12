@@ -15,6 +15,10 @@ export default function Navbar() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          throw new Error("Unauthorized");
+        }
         if (!res.ok) throw new Error("Failed to fetch profile");
         return res.json();
       })
