@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-export default function CreatePost({ postId, onFinish }) {
+export default function CreatePost({ postId, onFinish, onError }) {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [dragOver, setDragOver] = useState(false);
@@ -64,7 +64,7 @@ export default function CreatePost({ postId, onFinish }) {
     if (!hasValidToken(token)) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      alert('Your session is invalid or expired. Please log in again.');
+      onError?.('Your session is invalid or expired. Please log in again.');
       return;
     }
 
@@ -105,7 +105,7 @@ export default function CreatePost({ postId, onFinish }) {
           localStorage.removeItem('user');
         }
         const errorMessage = data?.error || `Request failed (${response.status})`;
-        alert('Error: ' + errorMessage);
+        onError?.(errorMessage);
         return;
       }
       setContent('');
@@ -116,7 +116,7 @@ export default function CreatePost({ postId, onFinish }) {
       if (err instanceof TypeError && err.message.includes('ByteString')) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        alert('Your session token is corrupted. Please log in again.');
+        onError?.('Your session token is corrupted. Please log in again.');
       }
     }
   };

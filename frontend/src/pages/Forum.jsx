@@ -5,10 +5,12 @@ import ForumFeed from "../components/ForumFeed";
 import { useState, useCallback } from "react";
 import PostOfTheDay from "../components/PostOftheDay";
 import Navbar from "../components/Navbar";
+import ErrorToast from "../components/ErrorToast";
 
 export default function Forum() {
   const [searchQuery, setSearchQuery] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [toast, setToast] = useState(null);
 
   const handlePostFinish = useCallback(() => {
     setRefreshKey(prev => prev + 1);
@@ -20,8 +22,9 @@ export default function Forum() {
       <Navbar/>
       <SearchBarForum onSearch={setSearchQuery} />
       <PostOfTheDay />
-      <CreatePost onFinish={handlePostFinish} />
-      <ForumFeed key={refreshKey} searchQuery={searchQuery} />
+      <CreatePost onFinish={handlePostFinish} onError={setToast} />
+      <ForumFeed key={refreshKey} searchQuery={searchQuery} onError={setToast} />
+      <ErrorToast message={toast} onClose={() => setToast(null)} />
     </div>
   );
 }
