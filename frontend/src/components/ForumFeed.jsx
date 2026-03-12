@@ -6,7 +6,8 @@ export default function ForumFeed({ searchQuery = "" }) {
   const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
   function loadPosts() {
-    fetch("/api/forum")
+    const url = currentUser?.id ? `/api/forum?userId=${currentUser.id}` : "/api/forum";
+    fetch(url)
       .then(res => res.json())
       .then(data => setPosts(data));
   }

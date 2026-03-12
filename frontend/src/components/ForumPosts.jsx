@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ForumPost({ post, currentUserId, onDelete, onRefresh }) {
-  const { id, content = "", image_url: imageUrl = "", likes = 0, reposts = 0, profiles, poster_id } = post;
+  const { id, content = "", image_url: imageUrl = "", likes = 0, reposts = 0, profiles, poster_id, likedByUser = false } = post;
   const username = profiles?.username ?? "anonymous";
   const avatar = profiles?.avatar_url ?? null;
   const navigate = useNavigate();
 
   const [likeCount, setLikeCount] = useState(likes);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(likedByUser);
   const [editing, setEditing] = useState(false);
   const [editContent, setEditContent] = useState(content);
 

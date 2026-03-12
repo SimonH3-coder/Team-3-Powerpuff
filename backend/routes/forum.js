@@ -7,12 +7,25 @@ import multer from 'multer';
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
   const { data, error } = await supabase
     .from('forum')
     .select('*, profiles(username, avatar_url)')
     .order('id', { ascending: false });
   if (error) return res.status(400).json({ error: error.message });
+
+  const userId = req.query.userId;
+  if (userId) {
+    const { data: interactions } = await supabase
+      .from('post_interactions')
+      .select('post_id')
+      .eq('user_id', userId)
+      .eq('interaction_type', 'like');
+    const likedSet = new Set((interactions || []).map(i => i.post_id));
+    const enriched = data.map(post => ({ ...post, likedByUser: likedSet.has(post.id) }));
+    return res.json(enriched);
+  }
+
   res.json(data);
 });
 
