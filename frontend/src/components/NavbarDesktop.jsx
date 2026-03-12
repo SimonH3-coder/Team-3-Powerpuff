@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 export default function NavbarDesktop() {
+=======
+
+export function NavbarDesktop() {
+>>>>>>> d9b1faadd1b225710b1a538ece096e507beaeda7
   const [isOpen, setIsOpen] = useState(false);
   return (
     <nav className="fill-[#FFFFFF] flex justify-between items-center p-6 sm:hidden">
@@ -76,6 +81,7 @@ export default function NavbarDesktop() {
           Map
         </Link>
 
+<<<<<<< HEAD
         <button className="text-black font-poppins text-sm font-normal">
           <a href="">Log in</a>
         </button>
@@ -84,6 +90,25 @@ export default function NavbarDesktop() {
           <a href="">Sign up</a>
         </button>
       </li>
+=======
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+              <path d="M1.24996 1.25L5.83329 5.41667L10.4166 1.25" stroke="#003D60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="w-[4.167] h-[9.167px] stroke-[2.5px] stroke-[#003D60]" />
+            </svg>
+          </li>
+        </div>
+        <li className="mt-4 flex justify-end w-full">
+          <div className="flex gap-2">
+            <button className="text-black font-poppins text-sm font-normal">
+              <Link to="/login">Log in</Link>
+            </button>
+
+            <button className="text-white font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5 rounded-full bg-[#25CE39]">
+              <Link to="/register">Sign up</Link>
+            </button>
+          </div>
+        </li>
+      </ul>
+>>>>>>> d9b1faadd1b225710b1a538ece096e507beaeda7
     </nav>
   );
 }
