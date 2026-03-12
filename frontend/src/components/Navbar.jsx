@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export function Navbar() {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const [user, setUser] = useState({ name: "@username" });
@@ -9,7 +9,7 @@ export function Navbar() {
 
   return (
     <nav>
-      <ul className="flex w-[402px] h-[60px] px-[7px] py-[11px] pb-[12px] justify-center items-center aspect-[67/10] relative ">
+      <ul className="flex w-100.5 h-15 px-1.75 py-2.75 pb-3 justify-center items-center aspect-67/10 relative ">
         <li className="w-[22.637px] h-[19.141px] fill-[#6FA9BB] absolute left-5 top-5 ">
           <button onClick={() => setIsOpen(!isOpen)} className="hamburger sm:hidden color-blue ">
             ☰
@@ -79,9 +79,9 @@ export function Navbar() {
         <div>
           <button className="close-button flex justify-end text-2xl w-full px-4 pb-4">×</button>
           <ul className="w-full flex flex-col items-center space-y-2 px-4 gap-2.5 ">
-            <li className="flex items-center gap-2.5  justify-between border-b-1 w-full">
+            <li className="flex items-center gap-2.5  justify-between border-b w-full">
               <div className="flex items-center gap-4">
-                <svg viewBox="0 0 17 17" fill="#757575" className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5">
+                <svg viewBox="0 0 17 17" fill="#757575" className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5">
                   <path d="M1.21429 15.895H5.69743V10.2851C5.69743 10.0324 5.79174 9.82063 5.98036 9.64972C6.16817 9.47808 6.4009 9.39227 6.67857 9.39227H10.3214C10.5991 9.39227 10.8322 9.47808 11.0209 9.64972C11.2087 9.82063 11.3026 10.0324 11.3026 10.2851V15.895H15.7857V6.29061C15.7857 6.17716 15.7586 6.07403 15.7044 5.98122C15.6501 5.8884 15.576 5.80737 15.4821 5.73812L8.94443 1.25414C8.81976 1.15543 8.67162 1.10608 8.5 1.10608C8.32838 1.10608 8.18064 1.15543 8.05679 1.25414L1.51786 5.73812C1.42476 5.80884 1.35069 5.88987 1.29564 5.98122C1.2406 6.07256 1.21348 6.17569 1.21429 6.29061V15.895ZM0 15.895V6.29061C0 6.00773 0.069619 5.73996 0.208857 5.48729C0.348095 5.23462 0.539952 5.02652 0.784428 4.86298L7.32336 0.356907C7.66579 0.118969 8.05679 0 8.49636 0C8.93593 0 9.32936 0.118969 9.67664 0.356907L16.2156 4.86188C16.4609 5.02541 16.6527 5.23389 16.7911 5.48729C16.9304 5.73996 17 6.00773 17 6.29061V15.895C17 16.1912 16.879 16.4494 16.6369 16.6696C16.3949 16.8899 16.1111 17 15.7857 17H11.0694C10.791 17 10.5578 16.9145 10.37 16.7436C10.1822 16.572 10.0883 16.3599 10.0883 16.1072V10.4983H6.91172V16.1072C6.91172 16.3606 6.81781 16.5727 6.63 16.7436C6.44219 16.9145 6.20945 17 5.93179 17H1.21429C0.888857 17 0.605119 16.8899 0.363071 16.6696C0.121024 16.4494 0 16.1912 0 15.895Z" />
                 </svg>
                 <a>Home</a>
@@ -93,7 +93,7 @@ export function Navbar() {
               </Link>
             </li>
 
-            <li className="flex items-center gap-2.5 justify-between border-b-1 w-full">
+            <li className="flex items-center gap-2.5 justify-between border-b w-full">
               <div className="flex items-center gap-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 17 21" fill="none">
                   <path d="M9.09657 20.3C8.92434 20.4292 8.71486 20.499 8.49957 20.499C8.28429 20.499 8.0748 20.4292 7.90257 20.3C2.75257 16.476 -2.71543 8.609 2.80957 2.925C3.54717 2.16021 4.43094 1.55145 5.4084 1.13487C6.38585 0.718297 7.43705 0.502398 8.49957 0.5C10.6336 0.5 12.6796 1.372 14.1886 2.924C19.7146 8.608 14.2476 16.474 9.09657 20.301" stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
@@ -102,7 +102,7 @@ export function Navbar() {
                     stroke="#757575"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5"
+                    className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5"
                   />
                 </svg>
                 <a>Map</a>
@@ -113,11 +113,11 @@ export function Navbar() {
                 </svg>
               </Link>
             </li>
-            <li className="flex items-center gap-2.5 justify-between border-b-1 w-full">
+            <li className="flex items-center gap-2.5 justify-between border-b w-full">
               <div className="flex items-center gap-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M2.39995 20.7272V2.18176H1.19995V20.1818C1.28351 20.6053 1.51179 20.9866 1.84568 21.2603C2.17956 21.534 2.59824 21.683 3.02995 21.6818H23.7V20.7272H2.39995Z" fill="#757575" />
-                  <path d="M4.7251 12H6.0001V17.85H4.7251V12ZM9.6151 6.00004H10.8001V17.85H9.6151V6.00004ZM14.5201 9.00004H15.6001V17.85H14.5201V9.00004ZM19.4251 3.75004L20.4001 3.75V17.85H19.4251V3.75004Z" fill="#757575" className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5" />
+                  <path d="M4.7251 12H6.0001V17.85H4.7251V12ZM9.6151 6.00004H10.8001V17.85H9.6151V6.00004ZM14.5201 9.00004H15.6001V17.85H14.5201V9.00004ZM19.4251 3.75004L20.4001 3.75V17.85H19.4251V3.75004Z" fill="#757575" className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5" />
                 </svg>
                 <a>Stats</a>
               </div>
@@ -127,7 +127,7 @@ export function Navbar() {
                 </svg>
               </Link>
             </li>
-            <li className="flex items-center gap-2.5 justify-between border-b-1 w-full">
+            <li className="flex items-center gap-2.5 justify-between border-b w-full">
               <div className="flex items-center gap-4">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -178,14 +178,14 @@ export function Navbar() {
               </div>
               {showUser && (
                 <div className="flex flex-col w-full item-start justify-start gap-4">
-                  <li className="flex items-center gap-2.5 border-b-1 w-full">
+                  <li className="flex items-center gap-2.5 border-b w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
                       <path d="M0.5 12.5C0.5 11.4391 0.921427 10.4217 1.67157 9.67157C2.42172 8.92143 3.43913 8.5 4.5 8.5H12.5C13.5609 8.5 14.5783 8.92143 15.3284 9.67157C16.0786 10.4217 16.5 11.4391 16.5 12.5C16.5 13.0304 16.2893 13.5391 15.9142 13.9142C15.5391 14.2893 15.0304 14.5 14.5 14.5H2.5C1.96957 14.5 1.46086 14.2893 1.08579 13.9142C0.710714 13.5391 0.5 13.0304 0.5 12.5Z" stroke="#003D60" stroke-linejoin="round" />
                       <path d="M8.5 6.5C10.1569 6.5 11.5 5.15685 11.5 3.5C11.5 1.84315 10.1569 0.5 8.5 0.5C6.84315 0.5 5.5 1.84315 5.5 3.5C5.5 5.15685 6.84315 6.5 8.5 6.5Z" stroke="#003D60" className="w-4 h-4 shrink-0" />
                     </svg>
                     <a>Profile</a>
                   </li>
-                  <li className="flex items-center gap-2.5  justify-start border-b-1 w-full">
+                  <li className="flex items-center gap-2.5  justify-start border-b w-full">
                     <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M9.92816 13.5C11.585 13.5 12.9282 12.1569 12.9282 10.5C12.9282 8.84315 11.585 7.5 9.92816 7.5C8.27131 7.5 6.92816 8.84315 6.92816 10.5C6.92816 12.1569 8.27131 13.5 9.92816 13.5Z" stroke="#003D60" />
                       <path
@@ -196,9 +196,9 @@ export function Navbar() {
 
                     <a>Settings</a>
                   </li>
-                  <li className="flex items-center gap-2.5  justify-start border-b-1 w-full">
+                  <li className="flex items-center gap-2.5  justify-start border-b w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" fill="none">
-                      <path d="M14.5 4.5L13.59 6L17 9H6V10H17L13.59 12.58L14.5 14L19.5 9.5M1 1H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V17H1V1Z" fill="#003D60" className="w-[19.5px] h-[18px] fill-[#003D60]" />
+                      <path d="M14.5 4.5L13.59 6L17 9H6V10H17L13.59 12.58L14.5 14L19.5 9.5M1 1H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V17H1V1Z" fill="#003D60" className="w-[19.5px] h-4.5 fill-[#003D60]" />
                     </svg>
                     <a>Log out</a>
                   </li>
@@ -207,11 +207,11 @@ export function Navbar() {
               <li className="mt-4 flex justify-start w-full">
                 <div className="flex gap-2">
                   <button className="text-black font-poppins text-sm font-normal">
-                    <a href="">Log in</a>
+                    <Link to="/login">Log in</Link>
                   </button>
 
                   <button className="text-white font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-center items-center gap-2.5 rounded-full bg-[#25CE39]">
-                    <a href="">Sign up</a>
+                    <Link to="/register">Sign up</Link>
                   </button>
                 </div>
               </li>

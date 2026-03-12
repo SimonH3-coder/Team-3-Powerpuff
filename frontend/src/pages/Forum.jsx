@@ -4,6 +4,7 @@ import CreatePost from "../components/CreatePost";
 import ForumFeed from "../components/ForumFeed";
 import { useState, useCallback } from "react";
 import PostOfTheDay from "../components/PostOftheDay";
+import Navbar from "../components/Navbar";
 
 export default function Forum() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,6 +17,7 @@ export default function Forum() {
   return (
     <div className="overflow-x-hidden">
       <Header />
+      <Navbar/>
       <SearchBarForum onSearch={setSearchQuery} />
       <PostOfTheDay />
       <CreatePost onFinish={handlePostFinish} />

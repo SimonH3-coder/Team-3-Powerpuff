@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function NavbarDesktop() {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,11 +92,11 @@ export function NavbarDesktop() {
         <li className="mt-4 flex justify-end w-full">
           <div className="flex gap-2">
             <button className="text-black font-poppins text-sm font-normal">
-              <a href="">Log in</a>
+              <Link to="/login">Log in</Link>
             </button>
 
             <button className="text-white font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5 rounded-full bg-[#25CE39]">
-              <a href="">Sign up</a>
+              <Link to="/register">Sign up</Link>
             </button>
           </div>
         </li>

@@ -7,7 +7,7 @@ export function NavbarOnepage() {
 
   return (
     <nav>
-      <ul className="flex w-[402px] h-[60px] px-[7px] py-[11px] pb-[12px] justify-center items-center aspect-[67/10] relative">
+      <ul className="flex w-100.5 h-15 px-1.75 py-2.75 pb-3 justify-center items-center aspect-67/10 relative">
         <li className="w-[22.637px] h-[19.141px] fill-[#6FA9BB] absolute left-5 top 5">
           <button onClick={() => setIsOpen(!isOpen)} className="hamburger">
             ☰
@@ -87,7 +87,7 @@ export function NavbarOnepage() {
                 <path
                   d="M1.21429 15.895H5.69743V10.2851C5.69743 10.0324 5.79174 9.82063 5.98036 9.64972C6.16817 9.47808 6.4009 9.39227 6.67857 9.39227H10.3214C10.5991 9.39227 10.8322 9.47808 11.0209 9.64972C11.2087 9.82063 11.3026 10.0324 11.3026 10.2851V15.895H15.7857V6.29061C15.7857 6.17716 15.7586 6.07403 15.7044 5.98122C15.6501 5.8884 15.576 5.80737 15.4821 5.73812L8.94443 1.25414C8.81976 1.15543 8.67162 1.10608 8.5 1.10608C8.32838 1.10608 8.18064 1.15543 8.05679 1.25414L1.51786 5.73812C1.42476 5.80884 1.35069 5.88987 1.29564 5.98122C1.2406 6.07256 1.21348 6.17569 1.21429 6.29061V15.895ZM0 15.895V6.29061C0 6.00773 0.069619 5.73996 0.208857 5.48729C0.348095 5.23462 0.539952 5.02652 0.784428 4.86298L7.32336 0.356907C7.66579 0.118969 8.05679 0 8.49636 0C8.93593 0 9.32936 0.118969 9.67664 0.356907L16.2156 4.86188C16.4609 5.02541 16.6527 5.23389 16.7911 5.48729C16.9304 5.73996 17 6.00773 17 6.29061V15.895C17 16.1912 16.879 16.4494 16.6369 16.6696C16.3949 16.8899 16.1111 17 15.7857 17H11.0694C10.791 17 10.5578 16.9145 10.37 16.7436C10.1822 16.572 10.0883 16.3599 10.0883 16.1072V10.4983H6.91172V16.1072C6.91172 16.3606 6.81781 16.5727 6.63 16.7436C6.44219 16.9145 6.20945 17 5.93179 17H1.21429C0.888857 17 0.605119 16.8899 0.363071 16.6696C0.121024 16.4494 0 16.1912 0 15.895Z"
                   fill="#757575"
-                  className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5"
+                  className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5"
                 />
               </svg>
               <a href="#home">Home</a>
@@ -103,7 +103,7 @@ export function NavbarOnepage() {
                   stroke="#757575"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5"
+                  className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5"
                 />
               </svg>
               <a href="#map">Map</a>
@@ -114,7 +114,7 @@ export function NavbarOnepage() {
             <li className="flex items-end gap-2.5 self-stretch">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M2.39995 20.7272V2.18176H1.19995V20.1818C1.28351 20.6053 1.51179 20.9866 1.84568 21.2603C2.17956 21.534 2.59824 21.683 3.02995 21.6818H23.7V20.7272H2.39995Z" fill="#757575" />
-                <path d="M4.7251 12H6.0001V17.85H4.7251V12ZM9.6151 6.00004H10.8001V17.85H9.6151V6.00004ZM14.5201 9.00004H15.6001V17.85H14.5201V9.00004ZM19.4251 3.75004L20.4001 3.75V17.85H19.4251V3.75004Z" fill="#757575" className="flex w-[24px] h-[24px] px-0.5 py-0.75 justify-center items-center gap-2.5" />
+                <path d="M4.7251 12H6.0001V17.85H4.7251V12ZM9.6151 6.00004H10.8001V17.85H9.6151V6.00004ZM14.5201 9.00004H15.6001V17.85H14.5201V9.00004ZM19.4251 3.75004L20.4001 3.75V17.85H19.4251V3.75004Z" fill="#757575" className="flex w-6 h-6 px-0.5 py-0.75 justify-center items-center gap-2.5" />
               </svg>
               <a href="#stats">Stats</a>
               <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
@@ -170,7 +170,7 @@ export function NavbarOnepage() {
             </li>
             <li className="flex-items-end gap-2.5 self-stretch">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" fill="none">
-                <path d="M14.5 4.5L13.59 6L17 9H6V10H17L13.59 12.58L14.5 14L19.5 9.5M1 1H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V17H1V1Z" fill="#003D60" className="w-[19.5px] h-[18px] fill-[#003D60]" />
+                <path d="M14.5 4.5L13.59 6L17 9H6V10H17L13.59 12.58L14.5 14L19.5 9.5M1 1H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V17H1V1Z" fill="#003D60" className="w-[19.5px] h-4.5 fill-[#003D60]" />
               </svg>
               <a>Log out</a>
             </li>
