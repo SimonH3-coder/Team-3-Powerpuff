@@ -3,24 +3,9 @@ import { Link } from "react-router-dom";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  // const [user, setUser] = useState(null);
+
   const [user, setUser] = useState({ name: "@username" });
   const [showUser, setShowUser] = useState(false);
-
-  // useEffect(() => {
-  //   supabase.auth.getUser().then(({ data: { user } }) => {
-  //    setUser(user);
-  //   });
-  //   const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-  //     if (event === "SIGNED_IN") {
-  //       setUser(session.user);
-  //     }
-  //     if (event === "SIGNED_OUT") {
-  //       setUser(null);
-  //     }
-  //   });
-  //   return () => authListener.subscription.unsubscribe();
-  // }, []);
 
   return (
     <nav>
@@ -175,9 +160,8 @@ export function Navbar() {
               <div></div>
             )}
 
-            <div className="w-full flex flex-col items-center justify-center">
-              <div className="flex w-full items-center justify-end gap-4">
-                <img src="#" alt="" />
+            <div className="w-full flex flex-col items-center">
+              <div className="flex w-full align-left items-center text-left justify-between gap-4">
                 <p>{user?.name} </p>
                 <svg
                   onClick={() => {

@@ -64,23 +64,30 @@ export function NavbarDesktop() {
             />
           </svg>
         </div>
-        <li>
-          <button>
-            <a href="">Home</a>
-          </button>
-          <button>
-            <a href="">News</a>
-          </button>
-          <button>
-            <a href="">Map</a>
-          </button>
-          <button>
-            <a href="">Community</a>
-          </button>
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
-            <path d="M1.24996 1.25L5.83329 5.41667L10.4166 1.25" stroke="#003D60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="w-[4.167] h-[9.167px] stroke-[2.5px] stroke-[#003D60]" />
-          </svg>
-        </li>
+
+        <div>
+          <li>
+            <Link to="/" className="text-black font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5">
+              Home
+            </Link>
+
+            <Link to="/news" className="text-black font-poppind text sm font-norml flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5">
+              News
+            </Link>
+
+            <Link to="/map" className="text-black font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5">
+              Map
+            </Link>
+
+            <Link to="/community" className="text-black font-poppins text-sm font-normal flex px-2 pb-1.5 p-1 justify-end items-end gap-2.5">
+              Community
+            </Link>
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+              <path d="M1.24996 1.25L5.83329 5.41667L10.4166 1.25" stroke="#003D60" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" className="w-[4.167] h-[9.167px] stroke-[2.5px] stroke-[#003D60]" />
+            </svg>
+          </li>
+        </div>
         <li className="mt-4 flex justify-end w-full">
           <div className="flex gap-2">
             <button className="text-black font-poppins text-sm font-normal">
