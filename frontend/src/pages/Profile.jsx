@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ProfileImage from '../components/profileImage';
+import ProfileImage from '../components/ProfileImage';
 import WeatherBar from '../components/Weatherbar';
 import Header from "../components/Header";
 import ForumPost from "../components/ForumPosts";
