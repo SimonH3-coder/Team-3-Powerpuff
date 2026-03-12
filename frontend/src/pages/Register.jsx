@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, LockIcon } from '../components/Icons';
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -22,7 +24,7 @@ export default function Register() {
     if (password.length < 6) return setError('Password must be at least 6 characters');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/api/auth/register', {
+      const res = await fetch(`${API}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username }),

@@ -4,6 +4,8 @@ import L from "leaflet";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL;
+
 const LAYERS = [
   { id: "standard", label: "Normal", url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 },
   { id: "satellite", label: "Satellite", url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", attribution: "Tiles &copy; Esri", maxZoom: 19 },
@@ -33,7 +35,7 @@ function LeafletMap() {
 
   async function loadForumMarkers(map) {
     try {
-      const res = await fetch("http://localhost:3000/api/forum");
+      const res = await fetch(`${API}/api/forum`);
       const posts = await res.json();
       posts.forEach(post => {
         const m = post.content?.match(/📍 Location: (-?\d+\.\d+), (-?\d+\.\d+)/);
@@ -49,7 +51,7 @@ function LeafletMap() {
     setPosting(true);
     setPostMsg("");
     try {
-      const res = await fetch("http://localhost:3000/api/forum", {
+      const res = await fetch(`${API}/api/forum`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ title, content: `📍 Location: ${clickedPlace.lat}, ${clickedPlace.lng}\n\n${content}` }),
