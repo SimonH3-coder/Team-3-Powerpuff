@@ -14,18 +14,18 @@ export default function Hero() {
           </h1>
 
           <p className="text-navy text-center md:text-left mt-8 font-poppins text-sm">
-            Track your daily electricity consumption with our calculator, and protect the island's unique ecosystem. Join the movement for a sustainable future.
+            Join our community to share your thoughts, visualize the future, and take action for a greener Gran Canaria. 
           </p>
 
           <div className="flex justify-center md:justify-start mt-8 gap-4">
-            <Link to="#" className="flex w-42.75 h-10 py-2 justify-center items-center bg-navy text-white rounded-[1.75rem] font-['Montserrat'] text-base font-semibold leading-6">
+            <Link to="/register" className="flex w-42.75 h-10 py-2 justify-center items-center bg-navy text-white rounded-[1.75rem] font-['Montserrat'] text-base font-semibold leading-6">
               Get Started
             </Link>
             <Link
-              to="#"
+              to="/forum"
               className="flex w-42.75 h-10 justify-center items-center border border-navy rounded-[1.75rem] font-['Montserrat'] text-[1rem] font-semibold text-navy"
             >
-              Learn more
+              Explore the Forum
             </Link>
           </div>
         </div>

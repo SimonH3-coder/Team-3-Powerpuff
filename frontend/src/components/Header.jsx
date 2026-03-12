@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container from "./Container";
+import ecoLogo from "../assets/ecoIsland1logo.svg";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -29,20 +30,40 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group" aria-label="Raíces home">
-            <span className="flex items-center justify-center w-9 h-9 rounded-full bg-green-accent text-white text-lg font-bold select-none">
-              🌿
-            </span>
+          <Link to="/" className="flex items-center gap-2 group" aria-label="Raíces home">
+            <img src={ecoLogo} alt="Raíces logo" className="w-9 h-9 rounded-full" />
             <span className="text-xl font-bold tracking-tight text-navy hidden sm:inline">
               Raíces
             </span>
             <span className="text-xl font-bold tracking-tight text-navy sm:hidden">
               Raíces
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav links */}
-          <nav className="hidden sm:flex items-center gap-6" aria-label="Main navigation">
+          <nav className="hidden sm:flex items-center gap-1" aria-label="Main navigation">
+            <Link
+              to="/"
+              className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded-lg px-3 py-2"
+            >
+              Home
+            </Link>
+            <Link
+              to="/news"
+              className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded-lg px-3 py-2"
+            >
+              News
+            </Link>
+            <Link
+              to="/map"
+              className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded-lg px-3 py-2"
+            >
+              Map
+            </Link>
+          </nav>
+
+          {/* Desktop action buttons */}
+          <div className="hidden sm:flex items-center gap-3">
             <Link
               to="/login"
               className="text-sm font-medium text-slate-600 hover:text-navy transition-colors focus:outline-none focus:ring-2 focus:ring-sky rounded px-1"
@@ -55,7 +76,7 @@ export default function Header() {
             >
               Sign up
             </Link>
-          </nav>
+          </div>
 
           {/* Mobile user icon */}
           <button
@@ -73,7 +94,29 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="sm:hidden border-t border-slate-200 bg-white">
           <Container>
-            <nav className="flex flex-col gap-2 py-4" aria-label="Mobile navigation">
+            <nav className="flex flex-col gap-1 py-4" aria-label="Mobile navigation">
+              <Link
+                to="/"
+                className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/news"
+                className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                News
+              </Link>
+              <Link
+                to="/map"
+                className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Map
+              </Link>
+              <div className="border-t border-slate-100 my-1" />
               <Link
                 to="/login"
                 className="block py-2 px-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors"
