@@ -17,7 +17,7 @@ export default function ForumFeed({ searchQuery = "" }) {
   );
 
   return (
-    <div className="flex flex-col items-center gap-4 py-6">
+    <div className="flex flex-col items-center gap-4 py-6 w-full overflow-x-hidden px-4">
       {filtered.length === 0 && searchQuery && (
         <p className="text-gray-400 text-sm">No posts found for "{searchQuery}"</p>
       )}
