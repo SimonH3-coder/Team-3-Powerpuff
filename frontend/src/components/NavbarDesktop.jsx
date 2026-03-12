@@ -15,7 +15,7 @@ export default function NavbarDesktop() {
 
     if (!hasToken) return;
 
-    fetch("/api/profiles", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profiles`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

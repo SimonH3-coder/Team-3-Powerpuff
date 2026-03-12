@@ -20,7 +20,7 @@ export default function ForumPost({ post, currentUserId, onDelete, onRefresh }) 
   async function handleLike() {
     const token = localStorage.getItem("token");
     if (!token) return;
-    const res = await fetch(`/api/forum/${id}/like`, { method: "POST", headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forum/${id}/like`, { method: "POST", headers: { Authorization: `Bearer ${token}` } });
     if (res.ok) {
       const data = await res.json();
       setLiked(data.liked);
@@ -31,14 +31,14 @@ export default function ForumPost({ post, currentUserId, onDelete, onRefresh }) 
   async function handleDelete() {
     if (!confirm("Delete this post?")) return;
     const token = localStorage.getItem("token");
-    const res = await fetch(`/api/forum/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forum/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
     if (res.ok && onDelete) onDelete(id);
   }
 
   async function handleEdit(e) {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    await fetch(`/api/forum/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/forum/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ content: editContent }),

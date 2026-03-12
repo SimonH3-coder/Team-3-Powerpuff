@@ -10,14 +10,14 @@ export default function Profile() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) return;
-        fetch('/api/profiles', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/profiles`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then(res => res.ok ? res.json() : null)
             .then(data => {
                 if (data) {
                     setProfile(data);
-                    return fetch(`/api/forum/user/${data.id}`, {
+                    return fetch(`${import.meta.env.VITE_API_URL}/api/forum/user/${data.id}`, {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                 }

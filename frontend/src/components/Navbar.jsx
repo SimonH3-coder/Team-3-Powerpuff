@@ -11,7 +11,7 @@ export default function Navbar() {
     const token = localStorage.getItem("token");
     if (!token || token === "null" || token === "undefined") return;
 
-    fetch("/api/profiles", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profiles`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

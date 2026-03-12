@@ -24,7 +24,7 @@ function AccountModal({ onClose, email, userId }) {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("/api/auth/change-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }),
@@ -39,7 +39,7 @@ function AccountModal({ onClose, email, userId }) {
 
   async function handleDeleteAccount() {
     const token = localStorage.getItem("token");
-    const res = await fetch(`/api/profiles/${userId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profiles/${userId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -142,7 +142,7 @@ export default function Settings() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch("/api/profiles", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profiles`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.ok ? res.json() : null)
@@ -159,7 +159,7 @@ export default function Settings() {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch(`/api/profiles/${user.id}/avatar`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profiles/${user.id}/avatar`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

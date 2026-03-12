@@ -22,7 +22,7 @@ export default function CreatePost({ postId, onFinish, onError }) {
     const token = localStorage.getItem('token');
     if (!hasValidToken(token)) return;
 
-    fetch('/api/profiles', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profiles`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -78,7 +78,7 @@ export default function CreatePost({ postId, onFinish, onError }) {
         formData.append('image', blob, 'image.jpg');
       }
 
-      const response = await fetch('/api/forum', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/forum`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
