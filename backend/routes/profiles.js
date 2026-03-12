@@ -63,14 +63,32 @@ router.put('/:id/avatar', checkAuth, upload.single('image'), async (req, res) =>
 });
 
 router.delete('/:id', checkAuth, async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.user.id;
   if (userId !== req.params.id) return res.status(403).json({ error: 'Can only delete your own account' });
 
-  const { error } = await supabase.from('profiles').delete().eq('id', req.params.id);
+  try {
+    // delete user's interactions, replies, and posts first (foreign keys)
+    await supabase.from('post_interactions').delete().eq('user_id', userId).then(() => {}).catch(() => {});
+    await supabase.from('replies').delete().eq('poster_id', userId).then(() => {}).catch(() => {});
+    await supabase.from('forum').delete().eq('poster_id', userId).then(() => {}).catch(() => {});
 
-  if (error) return res.status(400).json({ error: error.message });
+    const { error: profileError } = await supabase.from('profiles').delete().eq('id', userId);
+    if (profileError) {
+      console.error('Profile delete error:', profileError);
+      return res.status(400).json({ error: profileError.message });
+    }
 
-  res.json({ message: 'User deleted' });
+    const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+    if (authError) {
+      console.error('Auth delete error:', authError);
+      return res.status(400).json({ error: authError.message });
+    }
+
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    console.error('Delete account error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 //admin route for deleting mean people :<
