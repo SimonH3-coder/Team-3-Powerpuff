@@ -67,29 +67,35 @@ router.post('/:id/like', checkAuth, async (req, res) => {
     const userId = req.user.id;
     const postId = req.params.id;
 
-    //Checks for duplicates so users cant just infinitely like posts.
-    //TODO: Maybe use this for logic that'll make it so we DECREMENT and REMOVE the interaction if we find a duplicate? Could be kinda sick
-    const { data: existing, error: checkError } = await supabase
+    const { data: existing } = await supabase
       .from('post_interactions')
-      .select('*')
+      .select('id')
       .eq('user_id', userId)
       .eq('post_id', postId)
       .eq('interaction_type', 'like')
-      .single();
+      .maybeSingle();
 
-    if (existing) return res.status(400).json({ error: 'Already liked this post' });
+    if (existing) {
+      const { error: delErr } = await supabase.from('post_interactions').delete().eq('id', existing.id);
+      if (delErr) console.error('Unlike error:', delErr);
+      const { data: updated, error: updErr } = await supabase.from('forum').select('likes').eq('id', postId).single();
+      const newLikes = Math.max(0, (updated?.likes || 1) - 1);
+      await supabase.from('forum').update({ likes: newLikes }).eq('id', postId);
+      return res.json({ liked: false, likes: newLikes });
+    }
 
-    await supabase
-      .from('post_interactions')
-      .insert([{ user_id: userId, post_id: postId, interaction_type: 'like', created_at: new Date() }]);
-
-    //Makes the number go up
-    const { error } = await supabase.rpc('increment_likes', { post_id: parseInt(postId) });
-
-    if (error) return res.status(400).json({ error: error.message });
-
-    res.json({ message: 'Post liked' });
+    const { error: insErr } = await supabase.from('post_interactions').insert([{ user_id: userId, post_id: postId, interaction_type: 'like', created_at: new Date() }]);
+    if (insErr) {
+      console.error('Like insert error:', insErr);
+      return res.status(400).json({ error: insErr.message });
+    }
+    const { data: post } = await supabase.from('forum').select('likes').eq('id', postId).single();
+    const newLikes = (post?.likes || 0) + 1;
+    const { error: updErr } = await supabase.from('forum').update({ likes: newLikes }).eq('id', postId);
+    if (updErr) console.error('Like update error:', updErr);
+    res.json({ liked: true, likes: newLikes });
   } catch (err) {
+    console.error('Like catch:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -139,11 +145,25 @@ router.put('/:id', checkAuth, async (req, res) => {
 });
 
 router.delete('/:id', checkAuth, async (req, res) => {
-  const { error } = await supabase.from('forum').delete().eq('id', req.params.id);
+  const postId = parseInt(req.params.id);
+  const userId = req.user.id;
 
-  if (error) return res.status(400).json({ error: error.message });
+  // verify ownership
+  const { data: post, error: fetchErr } = await supabase.from('forum').select('poster_id').eq('id', postId).single();
+  if (fetchErr) { console.error('Fetch post error:', fetchErr); return res.status(400).json({ error: fetchErr.message }); }
+  if (!post) return res.status(404).json({ error: 'Post not found' });
+  if (post.poster_id !== userId) return res.status(403).json({ error: 'Not your post' });
 
-  res.json({ message: 'Topic deleted' });
+  // delete related rows first (ignore errors if tables don't have matching rows)
+  await supabase.from('post_interactions').delete().eq('post_id', postId).then(() => {}).catch(() => {});
+  await supabase.from('replies').delete().eq('topic_id', postId).then(() => {}).catch(() => {});
+
+  const { error } = await supabase.from('forum').delete().eq('id', postId);
+  if (error) {
+    console.error('Delete post error:', error);
+    return res.status(400).json({ error: error.message });
+  }
+  res.json({ message: 'Post deleted' });
 });
 //admin route for deleting mean posts :<
 router.delete('/admin/:id', checkAdmin, async (req, res) => {

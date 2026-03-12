@@ -41,11 +41,11 @@ function AccountModal({ onClose, email, userId }) {
 
   async function handleDeleteAccount() {
     const token = localStorage.getItem("token");
-    await fetch(`/api/profiles/${userId}`, {
+    const res = await fetch(`/api/profiles/${userId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ userId }),
+      headers: { Authorization: `Bearer ${token}` },
     });
+    if (!res.ok) { setMsg("Could not delete account."); return; }
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.location.href = "/";
