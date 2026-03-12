@@ -14,6 +14,10 @@ export default function NavbarDesktop() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          throw new Error("Unauthorized");
+        }
         if (!res.ok) throw new Error("Failed to fetch profile");
         return res.json();
       })
@@ -25,7 +29,7 @@ export default function NavbarDesktop() {
     <nav className="fill-[#FFFFFF] hidden md:flex justify-between items-center p-6 sticky top-0 z-50 bg-white">
       <Link to="/" className="flex flex-row justify-start items-start gap-2.5 absolute">
         <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_948_2414)">
+          <g clipPath="url(#clip0_948_2414)">
             <path d="M0 12.5C0 15.8152 1.42232 18.9946 3.95406 21.3388C6.4858 23.683 9.91958 25 13.5 25C17.0804 25 20.5142 23.683 23.0459 21.3388C25.5777 18.9946 27 15.8152 27 12.5C27 9.18479 25.5777 6.00537 23.0459 3.66117C20.5142 1.31696 17.0804 0 13.5 0C9.91958 0 6.4858 1.31696 3.95406 3.66117C1.42232 6.00537 0 9.18479 0 12.5Z" fill="#8DD9FF" />
             <path d="M0.0609131 13.6719C0.699315 20.0256 6.47114 25 13.5 25C20.5288 25 26.3006 20.0256 26.939 13.6719H0.0609131Z" fill="#3C9BD4" />
             <path opacity="0.35" d="M25.8158 17.6212C26.4229 16.3712 26.8024 15.0367 26.939 13.6719H0.0609131C0.159804 14.6573 0.385343 15.6283 0.732749 16.5643C5.52578 17.0549 18.1507 17.5284 25.8158 17.6212Z" fill="#9AF4EF" />
