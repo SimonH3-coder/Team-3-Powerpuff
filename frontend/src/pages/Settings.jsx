@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Container from "../components/Container";
 
 const ChevronRight = () => <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-accent-green flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>;
@@ -190,10 +189,9 @@ export default function Settings() {
 
   return (
     <>
-      <Header />
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen">
         <Container>
-          <div className="md:hidden flex flex-col items-center pt-10 pb-16 px-6">
+          <div className="md:hidden  bg-[#F4F6F4] flex flex-col items-center pt-10 pb-16 px-6">
             <AvatarWithHover size="sm" avatarUrl={avatarUrl} onUpload={handleAvatarUpload} />
             {uploading && <p className="text-xs text-gray-400 mt-1">Uploading…</p>}
             <p className="mt-4 text-sm font-poppins text-gray-700">{displayName}</p>

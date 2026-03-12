@@ -1,4 +1,3 @@
-import Header from "../components/Header";
 import MapGuide from "../components/MapGuide";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -138,7 +137,6 @@ const Map = () => {
   const [guideOpen, setGuideOpen] = useState(false);
   return (
     <div className="map-page">
-      <Header />
       <main className="map-wrapper" aria-label="Interactive Map of the Canary Islands">
         <LeafletMap />
         <button className="map-guide-btn" onClick={() => setGuideOpen(true)} aria-label="Open map guide" aria-haspopup="dialog" aria-expanded={guideOpen}>
