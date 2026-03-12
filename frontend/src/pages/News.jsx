@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const API_KEY = import.meta.env.VITE_NEWSDATA_API_KEY;
@@ -111,7 +110,6 @@ export default function News() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F4F6F4] font-sans text-slate-800 antialiased">
-      <Header />
       <main className="flex-1">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10">
           {loading && (

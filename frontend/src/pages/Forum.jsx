@@ -1,10 +1,8 @@
-import Header from "../components/Header";
 import SearchBarForum from "../components/SearchBarForum";
 import CreatePost from "../components/CreatePost";
 import ForumFeed from "../components/ForumFeed";
 import { useState, useCallback } from "react";
 import PostOfTheDay from "../components/PostOftheDay";
-import Navbar from "../components/Navbar";
 import ErrorToast from "../components/ErrorToast";
 
 export default function Forum() {
@@ -13,13 +11,12 @@ export default function Forum() {
   const [toast, setToast] = useState(null);
 
   const handlePostFinish = useCallback(() => {
-    setRefreshKey(prev => prev + 1);
+    setRefreshKey((prev) => prev + 1);
   }, []);
 
   return (
-    <div className="overflow-x-hidden">
-      <Header />
-      <Navbar/>
+    <div>
+
       <SearchBarForum onSearch={setSearchQuery} />
       <PostOfTheDay />
       <CreatePost onFinish={handlePostFinish} onError={setToast} />

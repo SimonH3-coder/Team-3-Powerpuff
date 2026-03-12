@@ -8,7 +8,7 @@ export default function Features() {
 
     <section className="sm:py-2">
       <div className="text-center mb-14">
-        <h2 className="text-3xl sm:text-4xl font-bold text-black tracking-tight">
+        <h2 className="mt-20 text-3xl sm:text-4xl font-bold text-black tracking-tight">
           Powerful Features for
           <span className="text-green-accent"> Climate Action</span>
         </h2>

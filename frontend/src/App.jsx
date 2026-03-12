@@ -9,10 +9,14 @@ import Profile from "./pages/Profile";
 import Forum from "./pages/Forum";
 import News from "./pages/News";
 import Settings from "./pages/Settings";
+import Navbar from "./components/Navbar";
+import NavbarDesktop from "./components/NavbarDesktop";
 
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
+      <NavbarDesktop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
