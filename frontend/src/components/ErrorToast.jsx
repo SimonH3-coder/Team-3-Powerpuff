@@ -1,15 +1,4 @@
 import { useEffect, useState } from 'react';
-
-/**
- * ErrorToast — drop-in replacement for alert() across the project.
- *
- * Usage:
- *   const [toast, setToast] = useState(null);
- *   setToast('Something went wrong!');               // error (default)
- *   setToast({ message: 'Done!', type: 'success' }); // success
- *   setToast({ message: 'Heads up', type: 'warning' });
- *   <ErrorToast message={toast} onClose={() => setToast(null)} />
- */
 export default function ErrorToast({ message, onClose, duration = 4000 }) {
   const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
@@ -114,7 +103,6 @@ export default function ErrorToast({ message, onClose, duration = 4000 }) {
         </button>
       </div>
 
-      {/* Single keyframe for the progress bar shrink — unavoidable without a Tailwind plugin */}
       <style>{`@keyframes toastShrink { from { width: 100%; } to { width: 0%; } }`}</style>
     </div>
   );
